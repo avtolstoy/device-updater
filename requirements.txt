@@ -1,0 +1,5 @@
+enum34
+pyserial
+nose
+pyhamcrest
+mockito-without-hardcoded-distribute-version
