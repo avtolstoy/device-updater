@@ -1,1 +1,1 @@
-nosetests -A "not os=='windows' and fixture is none"
+nosetests  serial_scan.py

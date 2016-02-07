@@ -7,12 +7,13 @@
 
 test the app - `kivy main.py`
 
+Python 3.4
 
 Instead, have to manually install
-
 virtualenv -p /usr/bin/python3.4 venv
 source venv/bin/activate
 
+On windows, requires OpenGL 2.0 (found out that this isn't supported on VirtualBox with Windows 8 Guest. Upgraded to Windows 10.)
 
 brew tap Homebrew/python
 brew update
