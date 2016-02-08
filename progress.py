@@ -1,3 +1,4 @@
+from event import EventHook
 
 
 class CompositeProgress:
@@ -15,22 +16,22 @@ class CompositeProgress:
 			current += s.current-s.min
 		self.set(current, total)
 
-	def set(self, current, total)
+	def set(self, current, total):
 		self.target.max = total
 		self.target.update(total)
 
 
 class ProgressSpan:
-	# span, currrent
+	# span, current
 	# posts events when current is changed
 	def __init__(self,max,min=0,name):
 		self.max = max
 		self.min = min
 		self.name = name
 		self.current = min
-		self.onChange = EventHandler()
+		self.onChange = EventHook()
 
-	def update(current):
+	def update(self, current):
 		if current!=self.current:
 			self.current = current
 			self.onChange.fire(self)

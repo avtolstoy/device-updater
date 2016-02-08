@@ -1,0 +1,17 @@
+
+<Gui>:
+
+<ConnectedDevice>:
+    size: 200, 50
+    go: button_go
+
+    Label:
+        text: self.parent.text
+
+    Button:
+        id: button_go
+        pos: 20, 20
+        text: 'GO!'
+        disabled: not self.parent.device
+        #background_color: (0.25, 0, 0, 1)
+        color: (1, 0, 0, 1)

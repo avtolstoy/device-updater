@@ -1,5 +1,7 @@
 enum34
 pyserial
+kivy
+pyinstaller
 nose
 pyhamcrest
 mockito-without-hardcoded-distribute-version

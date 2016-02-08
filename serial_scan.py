@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 class USBDevice(CommonEqualityMixin):
     """ Represents a USB device
     """
-
     def __init__(self, name, vid, pid):
         self.name = name
         self.vid = vid
@@ -20,6 +19,9 @@ class USBDevice(CommonEqualityMixin):
 
     def matches(self, vid, pid):
         return self.vid == vid and self.pid == pid
+
+    def __hash__(self):
+        return self.vid*23+self.pid+hash(self.name)
 
 
 class USBScanner:
@@ -30,6 +32,9 @@ class USBScanner:
         self.known_devices = known_devices
 
     def scan(self):
+        """
+        :return: an iterable of (port, device) listing the current set of connected devices
+        """
         return self.find_known_devices(self.serial_port_info())
 
     def find_known_devices(self, ports):
@@ -83,6 +88,10 @@ class USBScannerIntegrationTest(unittest.TestCase):
         self.assertEqual(list(self.scanner.scan())[0][1], self.dev1)
 
     test_photon_detected.photon = True  # conditionally enable this tet
+
+    def test_usb_device_hashable(self):
+        set(self.devs)
+
 
 
 if __name__ == '__main__':

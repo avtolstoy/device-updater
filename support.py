@@ -4,8 +4,8 @@ seen = []
 class CommonEqualityMixin(object):
     """ define a simple equals implementation for these value objects. """
 
-    def __eq__(Self, other):
-        return hasattr(other, '__dict__') and isinstance(other, Self.__class__) and Self._dicts_equal(other)
+    def __eq__(self, other):
+        return hasattr(other, '__dict__') and isinstance(other, self.__class__) and self._dicts_equal(other)
 
     def __str__(Self):
         return super().__str__() + ':' + str(Self.__dict__)
