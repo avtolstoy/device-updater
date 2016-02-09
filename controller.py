@@ -24,8 +24,9 @@ class Actor(threading.Thread):
         threading.Thread.__init__(self)
         self._commands = Queue()
         self._must_stop = False
+        self.exception_handler = None
 
-    def enqueue(self, method, args, kwargs):
+    def enqueue(self, method, args=None, kwargs=None):
         self._commands.put((method, args, kwargs))
 
     @command
@@ -34,8 +35,41 @@ class Actor(threading.Thread):
 
     def run(self):
         while not self._must_stop:
-            cmd, args, kwargs = self._commands.get()
-            cmd(*args, **kwargs)
+            try:
+                cmd, args, kwargs = self._commands.get()
+                cmd(*args if args is not None else [], **kwargs if kwargs is not None else {})
+            except Exception as e:
+                if self.exception_handler:
+                    self.exception_handler(cmd, args, kwargs, e)
+
+class ActorTest(unittest.TestCase):
+
+    def raise_hell(self, e):
+        raise e
+
+    def play_nice(self):
+        self.nice = True
+
+    def produce_exception(self, handler=None):
+        a = Actor()
+        a.exception_handler = handler
+        a.start()
+        a.enqueue(self.raise_hell, [ValueError()])
+        self.nice = False
+        a.enqueue(self.play_nice)
+        a.stop()
+        a.join(1)
+        self.assertEqual(a.is_alive(), False)
+        self.assertEqual(self.nice, True)
+
+    def test_actor_continues_running_on_exception_without_handler(self):
+        self.produce_exception()
+
+    def test_actor_continues_running_on_exception_with_handler(self):
+        test = self
+        def handler(method, args, kwargs, ex):
+            test.assertEqual(type(ex), type(ValueError()))
+        self.produce_exception(handler)
 
 
 class ActiveObjectProxy(MethodWrapperProxy):
