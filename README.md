@@ -33,17 +33,15 @@
 - Device text / image pulled from Device config
 - Intro page? - tell the user what the tool does. next button swipes to flash page
 - Complete page? - page when update is complete. Helps the user have closure - process is done.
-    Back button to flash more devices. Close button to close the app.
-- signing executable file on windows
-- signing for other platforms? dmg on OSX?
-- 
+  Back button to flash more devices. Close button to close the app.
+- signing executable file on windows, signing for other platforms? dmg on OSX?
+
 
 ## Test plan
 
 - device initially listening
 - device initially connecting to the cloud
--
-
+- ...
 
 ## Todo before Release
 - propagate exceptions on actor thread via callback
@@ -51,6 +49,7 @@
 - Add exception handler for app that displays a popup then exits.
 
 
+## Rough setup notes
 
 - DONT:: install kivy - https://kivy.org/docs/installation/installation-osx.html#using-the-kivy-app
 - test by typing `kivy`, then `import kivy` in the REPL
