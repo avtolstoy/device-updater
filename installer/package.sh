@@ -1,2 +1,2 @@
-python -m PyInstaller -y -D device_updater.spec
+python -m PyInstaller -y -D device_updater_osx.spec
 ls -al dist
