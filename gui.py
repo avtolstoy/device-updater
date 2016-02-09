@@ -1,51 +1,150 @@
-from kivy.properties import StringProperty, ObjectProperty
+import threading
 
 import kivy
-from app import ConnectedDeviceModel
-from kivy.clock import Clock
-
+from kivy.animation import Animation
 from kivy.app import App
-from kivy.config import Config
-from kivy.uix.label import Label
+from kivy.clock import Clock
+from kivy.properties import StringProperty, ObjectProperty, NumericProperty, BooleanProperty
 from kivy.uix.widget import Widget
+
+from app import UpdaterEvents, create_threaded_controller
+from method_proxy import MethodWrapperProxy
+from updater import FlashState
 
 kivy.require('1.9.1')
 
-Config.set('graphics', 'width', '200')
-Config.set('graphics', 'height', '180')
+
+def kivy_event_thread_dispatch(proxy, target, name, f):
+    """
+    a function factory that returns a function that will schedule
+    the given function for execution on the event thread.
+    """
+    def schedule(self, *args, **kwargs):
+        def scheduled(dt):
+            f(*args, **kwargs)
+        Clock.schedule_once(scheduled)
+    return schedule
 
 
-class ConnectedDevice(Label):
-    text = StringProperty("hi")
+def post_to_event_thread(target):
+    """
+    proxies a proxy of an interface that delegates to the target by dispatching to the GUI thread
+    :param target:  The object to invoke on the GUI thread
+    :param widget:  The root widget
+    :return: a proxy that can be used on other threads
+    """
+    return MethodWrapperProxy(target, kivy_event_thread_dispatch)
+
+def large(s):
+    return "[b]"+s+"[/b]"
+
+class ConnectedDevice(Widget):
+    text = StringProperty("")
+    go = ObjectProperty(None)       # start update button
+    bar = ObjectProperty(None)      # progress bar
+    go_text = StringProperty("")
+    device_opacity = NumericProperty(0)
+
+    """
+    the current update state value. see FlashState
+    """
+    update_state = ObjectProperty(FlashState.not_connected)
+
+    """
+    The currently connected device
+    """
     device = ObjectProperty(None, allownone=True)
-    go = ObjectProperty(None)
+
+    """
+    The current update progress as a value between 0 and 1
+    """
+    progress = NumericProperty(0)
+
+    """
+    Is the flash operation in progress
+    """
+    in_progress = BooleanProperty(False)
+
+    button_state_details = {
+        FlashState.not_connected: ("( NO DEVICE PRESENT )"),
+        FlashState.not_started: ( large(" UPDATE DEVICE ") ),
+        FlashState.in_progress: ( (" UPDATING ... ") ),
+        FlashState.error: ( large(" AW...  ;-( ") ),
+        FlashState.complete: ( large(" UPDATE COMPLETE "))
+    }
 
     def __init__(self, **kwargs):
         super(ConnectedDevice, self).__init__(**kwargs)
-        self.model = ConnectedDeviceModel(self)                     # the device model using this instance as the view
-        self.go.bind(on_press=lambda a:self.start())                # go button clicked
-        self.bind(device=lambda instance,value:self.device_changed()) # observe changes to device
-        self.device_changed()                                             # trigger first update
-        Clock.schedule_interval(lambda dt:self.trigger(), 1)
+        handler = FlashView(self)
+        self.controller = create_threaded_controller(post_to_event_thread(handler))
+        self.go.bind(on_release=lambda a:self.start())             # go button clicked
+        self.device_changed()                                    # trigger first update
 
-    def trigger(self):
-        self.model.update()
+    def on_update_state(self, instance, value):
+        state = self.update_state
+        text = self.button_state_details.get(state)
+        self.go_text = text
+
+    def on_device(self, instance, value):
+        self.device_changed()
+
+    def device_changed(self):
+        opacity = 1.0 if self.device else 0.2
+        anim = Animation(device_opacity=opacity, duration=0.25)
+        anim.start(self)
+
+        self.text = "Connected" if self.device else "Disconnected"
 
     def update(self, item):
         """Notification from the ConnectedDeviceModel"""
         self.device = item
 
     def start(self):
-        self.go.text = "Doing it!"
+        connected = self.device
+        if connected:
+            self.controller.flash(connected)
 
-    def device_changed(self):
-        self.text = "Connected" if self.device else "Disconnected"
 
+class FlashView(UpdaterEvents):
+    def __init__(self, root:ConnectedDevice):
+        self.root = root
+
+    def updater_state_changed(self, state:FlashState):
+        self.root.update_state = state
+
+    def connected_device_changed(self, device):
+        self.root.device = device
+
+    def error(self, error):
+        raise error
+
+    def progress(self, min, max, current):
+        self.root.progress = (current-min) / (max-min)
+
+
+
+"""
+class DisplayPopup(ExceptionHandler):
+    exception = None
+
+    def handle_exception(self, inst):
+        if self.exception:          # prevent recursion
+            return ExceptionManager.STOP
+        self.exception = inst
+                """
 
 class Gui(App):
 
+    """
+    Manages the View and View Model. Changes to the view model
+    """
     def build(self):
+        self.title = "Particle Device Updater"
+        self.thread = threading.current_thread()
         return ConnectedDevice()
+
+    def on_pause(self):
+        return True
 
 if __name__ == '__main__':
     Gui().run()

@@ -1,6 +1,7 @@
 
 seen = []
 
+
 class CommonEqualityMixin(object):
     """ define a simple equals implementation for these value objects. """
 
@@ -32,3 +33,16 @@ class CommonEqualityMixin(object):
     def __ne__(Self, other):
         return not Self.__eq__(other)
 
+"""
+from kivy.properties import ObjectProperty, NumericProperty
+
+class ObservableObject(ObjectProperty):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class ObservableNumber(NumericProperty):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+"""

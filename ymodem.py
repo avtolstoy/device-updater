@@ -119,27 +119,28 @@ class LightYModemClient(LightYModemProtocol):
             self.closing = True
             self.seq = 0
             self.send_filename_header("", 0)
-#            self.channel.close()
+            self.channel.close()
 
     def send_packet(self, file):
         response = LightYModemClient.eot
         data = file.read(LightYModemClient.packet_len)
         if len(data):
             response = self._send_ymodem_packet(data)
+            self.progress += len(data)
         return response
 
     def send_filename_header(self, name, size):
         packet = tobytes(name) + asbyte(0) + tobytes(str(size)) + bytes([0x20])
         return self._send_ymodem_packet(packet)
 
-    def transfer(self, file, channel, progress):
+    def transfer(self, file, channel:RawIOBase, progress:ProgressSpan):
         """
         Transfers a single file to the device and closes the session, so the device places the data in the
         target location.
 
         file: the file to transfer via ymodem
-        ymodem: the ymodem endpoint (a file-like object supporting write)
-        output: a stream for output messages
+        channel: the ymodem endpoint
+        progress: notification of progress
         """
         self.seq = 0
         self.channel = channel
@@ -156,11 +157,14 @@ class LightYModemClient(LightYModemProtocol):
         while response == LightYModemClient.ack:
             response = self.send_packet(file)
         file.close()
-        if response == LightYModemClient.eot:
-            self._send_close()
-            return True
-        return None
+        if response != LightYModemClient.eot:
+            raise LightYModemException("Unable to transfer the file to the device. Code=%d" % response)
+        self._send_close()
+        return True
 
+class LightYModemException(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 serverlog = logging.getLogger(__name__+".server")
 
@@ -336,7 +340,7 @@ class LightYModemTest(unittest.TestCase):
     def start_client(self, file, channel, progress):
         client = LightYModemClient()
         result = client.transfer(open(file, 'rb'), channel, progress)
-#        channel.close()
+        channel.close()
         self.assertEqual(result, True)
         logger.debug("server test: client thread exiting")
 
@@ -354,7 +358,7 @@ class LightYModemTest(unittest.TestCase):
         t.start()
         server = LightYModemServer(server_channel, lambda filename, length: self.add_file(filename, length))
         server.receive()
-#        server_channel.close()
+        server_channel.close()
         self.assertEqual(len(self.files), 1, "expected 1 file transferred")
         self.check_received(to_receive)
 

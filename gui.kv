@@ -1,17 +1,108 @@
 
-<Gui>:
+#:set offscreen 10000
+#:set charcoal (0.2,0.2,0.2,1)
+#:set device_text_pos_y 0.55
+#:set device_text_font_size 20
+#:set particle_blue (50/255,164/255,206/255,1)
+#:set progress_border_width 1
+#:set particle_blue_hex 0x32A4C8
+#:set dark_grey (88/255, 88/255, 88/255, 1)
+#:set progress_color (240/255, 30/255, 240/255, 0.5)
+#:set particle_red (220/255, 30/255, 0, 1)
+
+#: import FlashState updater.FlashState
+
+
+<GoButton@Button, Progress@Label>:
+    markup: True
+    pos_hint: { 'center_x': 0.5, 'center_y': 0.25 + self.hide_offset }
+    size_hint: ( 0.75, None )
+    hide_offset: 0
+    font_size: 30
+
 
 <ConnectedDevice>:
-    size: 200, 50
-    go: button_go
+    go: go
+    bar: bar
+    id: connected
 
-    Label:
-        text: self.parent.text
+    in_progress: connected.update_state == FlashState.in_progress
 
-    Button:
-        id: button_go
-        pos: 20, 20
-        text: 'GO!'
-        disabled: not self.parent.device
-        #background_color: (0.25, 0, 0, 1)
-        color: (1, 0, 0, 1)
+    FloatLayout:
+        size: self.parent.size
+        size_hint: ( 1, 1 )
+        canvas.before:
+            Color:
+                rgb: 0.95,.95,.95,1
+            Rectangle:
+                size: self.size
+
+        Label:
+            id: device_text
+            text: connected.text + " " + str(connected.progress * 100) + "%"
+            pos_hint: { 'center_x':0.25, 'center_y':0.7 }
+            size_hint: ( 1, 0.1 )
+
+        EffectWidget:
+            id: logo
+            pos_hint: { 'right': 0.98, 'top' : 0.98 }
+            size_hint: (0.25 , 0.12)
+            Image:
+                allow_stretch: True
+                source: 'assets/particle-horizontal-dark-093e6b1e.png'
+
+        #: import ew kivy.uix.effectwidget
+        EffectWidget:
+            #effects: [ ew.HorizontalBlurEffect(size=20.0), ew.VerticalBlurEffect(size=20.0) ]
+            id: device
+            pos_hint: { 'center_x': 0.5, 'center_y': 0.7 }
+            size_hint: (0.3 , 0.3)
+            opacity: root.device_opacity
+            Image:
+                allow_stretch: True
+                source: 'assets/electron_horizontal.png'
+
+        Progress:
+            id: bar
+            text: root.go_text
+            # hide when not connected or when the button is shown
+            hide_offset: 0 if connected.update_state != FlashState.not_connected and go.hide_offset else offscreen
+            background_color: dark_grey
+            canvas.before:
+                Color:
+                    rgb: particle_blue if connected.update_state != FlashState.error else particle_red
+                Rectangle:
+                    size: ( self.width, self.height )
+                    pos: self.pos
+
+                Color:
+                    rgb: progress_color
+                Rectangle:
+                    size: ( self.width * root.progress if connected.in_progress else 0, self.height )
+                    pos: self.pos
+
+        GoButton:
+            id: go
+            text: root.go_text
+            hide_offset: 0 if root.update_state == FlashState.not_started else offscreen
+            disabled: connected.update_state != FlashState.not_started and connected.in_progress
+            background_normal: "atlas://data/images/defaulttheme/button_pressed"
+            background_down: "atlas://data/images/defaulttheme/button"
+
+        Label:
+            id: not_connected
+            markup: True
+            text: "( Connect a device to your computer with a USB cable. )\n[ref=help][color=#32A4C8]Show me how[/ref][/color]"
+            halign: 'center'
+            hide_offset: 0 if not connected.device else offscreen
+            pos_hint: { 'center_x': 0.5, 'center_y': device_text_pos_y + self.hide_offset }
+            color: charcoal
+            font_size: device_text_font_size
+
+        Label:
+            id: device_name
+            markup: True
+            text: "" if not root.device else "[b]Electron[/b] on "+root.device[0]
+            color: charcoal
+            pos_hint: { 'center_x': 0.5, 'center_y': device_text_pos_y }
+            font_size: device_text_font_size

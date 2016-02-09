@@ -1,111 +1,116 @@
-from Enum import enum
+import logging
+import unittest
+from enum import IntEnum
+from threading import Thread
+
 import os
 
-# text "To start updating your device, conenct it to your computer via a USB cable. ??"
-# image is electron greyed out and slightly translucent
-# when the device is connected, the image moves to the left, a cable and laptop appear
-# for now, no device info. later versions will display details of the connected device. 
-# text changes "To update your device, click on the update button."
-# as the device updates, it blinks the magenta LED
-# as the device updates, lights flow along the USB cable. 
-# the round updater button fills in as the update progresses. 
-# when the update is complete, button changes to complete.
-# disconnecting the device resets the system. 
+import time
 
-# monitor serial connections every second to determine which devices are available and publish that as donnect/disconnect events. 
-
-# connect/disconenct passed through a filter of interesting devices
-# map from VID/PID to device type.  
-# maintains a list of USB devices so the same device is featured in the disconnect method.
-
-# refactor ymodem class to provide bytes transferred progress 
+from devices import USBDeviceConnection, UpgradableDevice
+from event import EventHook
+from progress import ProgressSpan, CompositeProgress
+from ymodem import LightYModemClient
+logger = logging.getLogger(__name__)
 
 
+use_mock = False
 
-class UpdateController:
-	
-	def __init__(self):
-		self.updateEnabled = BooleanProperty()	# bound property
-		self.device = None
-		self.deviceManager = DeviceManager()
-		self.updater = Updater()
-		self.state = ProgressState()
-	
-	void start():
-		if not self.updateEnabled or not self.device:
-			return
-		files = self.device.system_files
-		tasks = [UpdateFirmware(f) for f in files]
-		self.updater.start(tasks, self.state, self.device)
-		
-		
 
-class UpdateFirmware:
-	# file to update
-	# each device class maintains a list of UpdateFirmare instances against version
-	# these are flashed in order	
-	def __init__(self, file):
-		self.file
-		self.progress = self.asProgress()
+class UpdateFirmwareTask:
+    """
+    Describes the firmware update process for a single file to a specific device.
+    """
+    def __init__(self, filename, connection, device):
+        self.filename = filename
+        self.progress_ = self._build_progress()
+        self.connection = connection
+        self.device = device
+        self.thread = None
 
-	def asProgress(self):
-		size = os.path.getsize(self.file)
-		return ProgressSpan(size, name=os.path.basename(self.file))	
+    def _build_progress(self):
+        size = os.path.getsize(self.filename)
+        return ProgressSpan(size, name=os.path.basename(self.filename))
 
-	def start(self):
-		progress = self.progress
-		# run ymodem updating bytes transferred count to progress
-		LightYModem modem;
-		modem.transfer(self.file, self.progress.update)
-		# todo - catch exception and set state to fail
+    def start(self):
+        logger.info("starting ymodem transfer of file %s" % self.progress.name)
+        file = open(self.filename, 'rb')
+        result = self.do_update(file)
+        self.connection.close()
+        self.connection.wait_connected(30)
+        return result
+
+    def do_update(self, file):
+        client = LightYModemClient()
+        if use_mock:
+            p = self.progress
+            x = p.min
+            while x <= p.max:
+                self.progress.update(x)
+                time.sleep(0.01)
+                x += 1024*2
+            p.update(p.max)
+            result = True
+        else:
+            result = client.transfer(file, self.connection.enter_ymodem_mode(), self.progress)
+            time.sleep(5)
+        return result
+
+    @property
+    def progress(self):
+        return self.progress_
+
+    @property
+    def firmware_file(self):
+        return self.filename
+
+
+
 
 class Updater:
-	# queue of update requests. for now, udpate request is flash a firmware file
-	
-	# manages the flash process
-	# progress monitor 
-	# status monitor
-	# target device
-	
-	def start(items, progress, device):
-		composite = CompositeProgress([i.progress for i in items], progress)
-		progress.setStatus("Entering update mode");
-		device.listen()
-		for i in items:
-			progress.setStatus(i.file)
-			device.listen()
-			i.start()
-		progress.setStatus("Update complete")
+    def start(self, progress:ProgressSpan, connection:USBDeviceConnection, device:UpgradableDevice):
+        files = device.system_modules()
+        tasks = [UpdateFirmwareTask(f, connection, device) for f in files]
+        CompositeProgress([task.progress for task in tasks], progress)
+        for task in tasks:
+            task.start()
 
 
-class FlashState(Enum):
-	not_connected = 1
-	not_started = 2
-	in_progress = 3
-	error = 4
-	complete = 5
+class FlashState(IntEnum):
+    not_connected = 1
+    not_started = 2
+    in_progress = 3
+    error = 4
+    complete = 5
 
 
-class ProgressState:
-"""
-maintains the application state
-"""
-	# status: not connected, not started, in progress, success, error
-	# ProgressSpan
-	def __init__(self):
-		self.onChange = EventHook()
-		self.state = None
-		self.progress = None
-		self.process_max = None
-		self.setState(FlashState.not_conencted)
-		
-	def setState(self,state):
-		old = self.state
-		self.state = state
-		if old!=state:
-			self.onChange.fire(self);
-		
-	def update(self, current):
-		self.progress = current
-		
+class UpdaterState:
+    """
+    UpdaterState for the entire update process.
+    """
+    def __init__(self):
+        self.on_change = EventHook()
+        self.state = None
+        self.set_state(FlashState.not_connected)
 
+    def set_state(self,state):
+        old = self.state
+        self.state = state
+        if old!=state:
+            self.notify()
+
+    def notify(self):
+        self.on_change.fire(self)
+
+
+class UpdaterStateTest(unittest.TestCase):
+    called = False
+
+    def test_change_state_is_published(self):
+        s = UpdaterState()
+
+        def handler(item):
+            item.called = True
+        s.on_change += lambda source: handler(self)
+        s.set_state(FlashState.in_progress)
+        self.assertTrue(self.called)

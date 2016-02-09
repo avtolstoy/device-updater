@@ -1,0 +1,4 @@
+installer/build
+installer/dist
+py3
+*.pyc

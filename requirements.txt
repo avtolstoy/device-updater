@@ -1,4 +1,3 @@
-enum34
 pyserial
 kivy
 pyinstaller
