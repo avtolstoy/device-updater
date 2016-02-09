@@ -7,7 +7,7 @@ from kivy.tools.packaging.pyinstaller_hooks import get_deps_all, hookspath, runt
 a = Analysis(['../gui.py'],
              pathex=['/Users/mat1/dev/spark/device-updater/installer'],
               binaries=None,
-             datas=None,
+             datas=[ ('../gui.kv', '.')],
              hookspath=hookspath(),
              runtime_hooks=runtime_hooks(),
              win_no_prefer_redirects=False,

@@ -1,4 +1,55 @@
 
+## Features
+
+- available as CLI and GUI
+- cross platform - Windows, OSX, Linux, (potentially Android, iOS also)
+- automatically detects devices when they are connected
+- ymodem client implementation
+- ymodem server implementation
+- handles flashing multiple files and the ensuing device resets
+- progress notification spans multiple flashes
+
+
+## Roadmap
+
+- DONE: multi file flash
+- DONE: composite progress notification
+- DONE: PoC console app to flash to a real device
+- DONE: threading for app/UI separation
+- DONE: gui app to flash to the device
+- DONE: hide button when it's not needed - move widgets offscreen that aren't needed
+- DONE: reveal progress bar when it's needed
+- DONE: center device image
+- DONE: white background
+- DONE: particle logo
+- DONE: fade in/out device on connection change
+- DONE: text displaying device type / port
+- DONE: derived properties for updating and other state
+- DONE: different button colors for different states
+- DONE: on last flash, don't go to complete until the device has rebooted
+- DONE: Capture exceptions on the app thread and propagate to UI thread
+
+- Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
+- Device text / image pulled from Device config
+- Intro page? - tell the user what the tool does. next button swipes to flash page
+- Complete page? - page when update is complete. Helps the user have closure - process is done.
+    Back button to flash more devices. Close button to close the app.
+- signing executable file on windows
+- signing for other platforms? dmg on OSX?
+- 
+
+## Test plan
+
+- device initially listening
+- device initially connecting to the cloud
+-
+
+
+## Todo before Release
+- propagate exceptions on actor thread via callback
+- ymodem from listening mode
+- Add exception handler for app that displays a popup then exits.
+
 
 
 - DONT:: install kivy - https://kivy.org/docs/installation/installation-osx.html#using-the-kivy-app

@@ -1,1 +1,1 @@
-dist/device_updater/device_updater
+dist/device_updater_osx/devupd
