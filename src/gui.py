@@ -1,6 +1,8 @@
+import os
 import threading
 
 import kivy
+import sys
 from kivy.animation import Animation
 from kivy.app import App
 from kivy.clock import Clock
@@ -146,6 +148,13 @@ class DisplayPopup(ExceptionHandler):
                 """
 
 class Gui(App):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        # This is needed to set the current working folder when extracting from a single executable
+        if hasattr(sys, '_MEIPASS'):
+            os.chdir(os.path.join(sys._MEIPASS))
+
 
     """
     Manages the View and View Model. Changes to the view model
