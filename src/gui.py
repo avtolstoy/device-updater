@@ -1,4 +1,5 @@
 import os
+import subprocess
 import threading
 
 import kivy
@@ -152,7 +153,7 @@ class Gui(App):
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
         # This is needed to set the current working folder when extracting from a single executable
-        if True or hasattr(sys, '_MEIPASS'):
+        if hasattr(sys, '_MEIPASS'):
             p = os.path.join(sys._MEIPASS)
             os.chdir(p)
             print("changed folder to "+p)            
@@ -169,5 +170,29 @@ class Gui(App):
     def on_pause(self):
         return True
 
+
+def install_driver():
+    # add cert to store
+    exe = 'resources/windows/trustcertregister.exe'
+    subprocess.run(exe)
+    install_inf_file("photon.inf")
+    install_inf_file("electron.inf")
+
+def install_inf_file(name):
+    winpath = os.environ['WINDIR']
+
+    try:
+        pnputil = os.path.join(winpath, 'SYSNATIVE\\PNPUTIL.exe')
+        subprocess.run(pnputil, '-1', '-a', name, shell=True)
+    except Exception as e:
+        print(e)
+        try:
+            pnputil = os.path.join(winpath, 'System32\\PNPUTIL.exe')
+            subprocess.run(pnputil, '-1', '-a', name, shell=True)
+        except Exception as e:
+            print(e)
+
 if __name__ == '__main__':
+    if os.name=='nt':
+        install_driver()
     Gui().run()

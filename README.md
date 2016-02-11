@@ -33,6 +33,8 @@
 - DONE: work around USB unreliability in 0.4.9 with large packets
 
 - Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
+ - build a small EXE that installs our certificate to the trusted certificate store. This exe is combined into an installer which is run silently.
+ -
 - Intro page? - tell the user what the tool does. next button swipes to flash page
 - Complete page? - page when update is complete. Helps the user have closure - process is done.
     Back button to flash more devices. Close button to close the app.
