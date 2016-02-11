@@ -4,10 +4,10 @@ block_cipher = None
 from kivy.tools.packaging.pyinstaller_hooks import get_deps_all, hookspath, runtime_hooks
 
 
-a = Analysis(['../gui.py'],
-             pathex=['/Users/mat1/dev/spark/device-updater/installer'],
+a = Analysis(['../src/gui.py'],
+             pathex=['./installer'],
               binaries=None,
-             datas=[ ('../gui.kv', '.')],
+             datas=[ ('../src/gui.kv', '.')],
              hookspath=hookspath(),
              runtime_hooks=runtime_hooks(),
              win_no_prefer_redirects=False,
@@ -26,11 +26,11 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False )
-coll = COLLECT(exe, Tree('..'),
+coll = COLLECT(exe, Tree('../src'),
         Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2.framework'),Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2_image.framework'),Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2_ttf.framework'),Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2_mixer.framework'),
                a.binaries,
                a.zipfiles,
                a.datas,
                strip=False,
                upx=True,
-               name='device_updater_osx')
+               name='osx_dir')
