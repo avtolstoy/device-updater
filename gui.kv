@@ -27,6 +27,7 @@
     id: connected
 
     in_progress: connected.update_state == FlashState.in_progress
+    update_version: root.device[1].version if root.device else ""
 
     FloatLayout:
         size: self.parent.size
@@ -102,7 +103,7 @@
         Label:
             id: device_name
             markup: True
-            text: "" if not root.device else "[b]Electron[/b] on "+root.device[0]
+            text: "" if not root.device else "[b]"+root.device[1].name+"[/b] on "+root.device[0]
             color: charcoal
             pos_hint: { 'center_x': 0.5, 'center_y': device_text_pos_y }
             font_size: device_text_font_size

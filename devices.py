@@ -1,17 +1,20 @@
+"""
+Provides UpgradableDevice describes the upgrade details for a given device.
+USBDeviceConnection is a proxy to a connected device. Methods for entering listening/ymodem mode.
+A Tee can be used to debug the serial connection.
+"""
+
 import logging
 from sys import stdout, stderr
 
-from io import RawIOBase
+from io import RawIOBase, TextIOBase
 
 import os
 import serial
 import time
 
-import sys
-
-from pipe import RWPair
 from serial_scan import USBDevice
-from ymodem import LightYModemClient, LightYModemProtocol
+from ymodem import LightYModemProtocol
 
 logger = logging.getLogger(__name__)
 
@@ -73,9 +76,9 @@ def try_with_timeout(target, args, timeout, pause):
 
 
 class USBDeviceConnection:
+
     ymodem_timeout = 0.1
     use_tee = False
-
     """
     Describes a connection to a device on a given serial port.
     """
@@ -105,7 +108,6 @@ class USBDeviceConnection:
         logger.debug("listening: %s" %  line)
         self.drain()
         return line.lower().startswith("system firmware version")
-
 
     def wait_connected(self, timeout=30, sleep=1):
         return try_with_timeout(self._connect, [], timeout, sleep)
@@ -148,8 +150,8 @@ class USBDeviceConnection:
                 result = self.serial.read(1)
                 if not len(result) or (result[0]!=LightYModemProtocol.ack and result[0]!=LightYModemProtocol.crc16):
                     raise IOError("device not ready for ymodem transfer")
-
-            return self.serial if not self.use_tee else Tee(self.serial, stdout, stderr)
+            print(self.use_tee)
+            return self.serial if not self.use_tee else Tee(self.serial, stderr, stdout)
         except:
             self.close()
             raise
@@ -186,7 +188,7 @@ def asbytes(s):
     return s.encode('ascii') if type(s) == str else s
 
 
-class Tee(RawIOBase):
+class Tee(TextIOBase):
     def __init__(self, main, dump, peek, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.main = main
@@ -204,21 +206,29 @@ class Tee(RawIOBase):
 
     def read(self, size=1):
         result = self.main.read(size)
-        if result:
-            self.peek.write(str(result))
-            self.peek.flush()
+        self.dump_read(result)
         return result
 
     def write(self,  data):
         result = self.main.write(data)
-        self.dump.write(str(data))
-        self.dump.flush()
+        #self.dump.write(str(data))
+        #self.dump.flush()
         return result
 
     def flush(self, *args, **kwargs):
         result = self.main.flush()
         self.dump.flush()
+        self.peek.flush()
         return result
+
+    def readline(self):
+        result = self.main.readline()
+        self.dump_read(result)
+
+    def dump_read(self, result):
+        if result:
+            self.peek.write(str(result))
+            self.peek.flush()
 
     def close(self, *args, **kwargs):
         result = self.main.close(*args, **kwargs)

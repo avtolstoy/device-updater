@@ -1,3 +1,7 @@
+"""
+The updater application logic. This is independent from the UI used (console, GUI)
+"""
+
 import logging
 import unittest
 from abc import abstractmethod
@@ -74,20 +78,28 @@ def create_threaded_controller(callback:UpdaterEvents):
     target = UpdaterController(callback)
     actor = Actor()
     actor.setDaemon(True)
+    actor.exception_handler = lambda cmd,args,kwargs,e: callback.error(e)
     actor.start()
     proxy = ActiveObjectProxy(actor, target)
+    target._set_thread_proxy(proxy)
     return proxy
 
 
 class UpdaterController:
     def __init__(self, callback:UpdaterEvents):
         self.model = ConnectedDeviceModel(self)                     # the device model using this instance as the view
+        # we pass in the proxy because the device model runs on a separate thread, but we want updates to fire on the main controller thread.
         self.callback = callback
         self.scan_thread = None
         self.updater_state = UpdaterState()
-        self.updater_state.on_change += lambda source: callback.updater_state_changed(self.updater_state.state)
         self.updater_state.on_change += lambda source: self._updater_state_changed(self.updater_state.state)
+        self.updater_state.on_change += lambda source: callback.updater_state_changed(self.updater_state.state)
         self.updater_state.notify()     # trigger initial update
+
+    def _set_thread_proxy(self, proxy):
+        # rather than using self to handle updates, use the proxy so updates are processed on the controller thraed rather than
+        # the background scanner thread
+        self.model.view = proxy
 
     def _updater_state_changed(self, state):
         if state != FlashState.in_progress:
@@ -119,21 +131,24 @@ class UpdaterController:
             raise
 
     def start_scan(self, period):
-        if not self.scan_thread:
-            event = Event()
-            self.scan_thread = Thread(name="usb scan", target=self._background_scan, args=[period, event], daemon=True)
-            self.scan_thread.event = event
-            self.scan_thread.start()
+        self.stop_scan()
+        event = Event()
+        scan_thread = Thread(name="usb scan", target=self._background_scan, args=[period, event], daemon=True)
+        scan_thread.event = event
+        self.scan_thread = scan_thread
+        scan_thread.start()
 
     def stop_scan(self):
-        if self.scan_thread:
-            self.scan_thread.event.set()
-        self.scan_thread = None
+        t = self.scan_thread
+        if t:
+            t.event.set()
+            t.join()
 
     def _background_scan(self, period, stop_event:Event):
         while not stop_event.is_set():
             self.scan()
             stop_event.wait(period)
+        self.scan_thread = None
 
 
 class ConnectedDeviceModel:

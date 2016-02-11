@@ -38,12 +38,15 @@ def post_to_event_thread(target):
 def large(s):
     return "[b]"+s+"[/b]"
 
+
 class ConnectedDevice(Widget):
     text = StringProperty("")
     go = ObjectProperty(None)       # start update button
     bar = ObjectProperty(None)      # progress bar
     go_text = StringProperty("")
     device_opacity = NumericProperty(0)
+
+    update_version = StringProperty("")
 
     """
     the current update state value. see FlashState
@@ -67,8 +70,8 @@ class ConnectedDevice(Widget):
 
     button_state_details = {
         FlashState.not_connected: ("( NO DEVICE PRESENT )"),
-        FlashState.not_started: ( large(" UPDATE DEVICE ") ),
-        FlashState.in_progress: ( (" UPDATING ... ") ),
+        FlashState.not_started: ( large(" UPDATE DEVICE TO v{version} ") ),
+        FlashState.in_progress: ( large(" UPDATING TO v{version}... ") ),
         FlashState.error: ( large(" AW...  ;-( ") ),
         FlashState.complete: ( large(" UPDATE COMPLETE "))
     }
@@ -82,8 +85,7 @@ class ConnectedDevice(Widget):
 
     def on_update_state(self, instance, value):
         state = self.update_state
-        text = self.button_state_details.get(state)
-        self.go_text = text
+        self.update_button()
 
     def on_device(self, instance, value):
         self.device_changed()
@@ -92,8 +94,16 @@ class ConnectedDevice(Widget):
         opacity = 1.0 if self.device else 0.2
         anim = Animation(device_opacity=opacity, duration=0.25)
         anim.start(self)
-
         self.text = "Connected" if self.device else "Disconnected"
+        self.update_button()
+
+    def on_update_version(self, instance, value):
+        self.update_button()
+
+    def update_button(self):
+        text = self.button_state_details.get(self.update_state).format(version=self.update_version)
+        self.go_text = text
+
 
     def update(self, item):
         """Notification from the ConnectedDeviceModel"""
@@ -110,13 +120,15 @@ class FlashView(UpdaterEvents):
         self.root = root
 
     def updater_state_changed(self, state:FlashState):
+        print(threading.current_thread().name+" state changed to "+str(state))
         self.root.update_state = state
 
     def connected_device_changed(self, device):
+        print(threading.current_thread().name+" device connected" if device else "device disconnected")
         self.root.device = device
 
     def error(self, error):
-        raise error
+        print(error)
 
     def progress(self, min, max, current):
         self.root.progress = (current-min) / (max-min)

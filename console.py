@@ -1,3 +1,6 @@
+"""
+A proof of concept Console UI.
+"""
 import logging
 from sys import stdout
 from time import sleep

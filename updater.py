@@ -52,7 +52,9 @@ class UpdateFirmwareTask:
             p.update(p.max)
             result = True
         else:
-            result = client.transfer(file, self.connection.enter_ymodem_mode(), self.progress)
+            channel = self.connection.enter_ymodem_mode()
+            client.wait_until_ready(channel)
+            result = client.transfer(file, channel, self.progress)
             time.sleep(5)
         return result
 

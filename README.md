@@ -28,12 +28,14 @@
 - DONE: different button colors for different states
 - DONE: on last flash, don't go to complete until the device has rebooted
 - DONE: Capture exceptions on the app thread and propagate to UI thread
+- DONE: Device text / image pulled from Device config
+- DONE: make ymodem more robust to any remaining data in the buffer sent over serial
+- DONE: work around USB unreliability in 0.4.9 with large packets
 
 - Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
-- Device text / image pulled from Device config
 - Intro page? - tell the user what the tool does. next button swipes to flash page
 - Complete page? - page when update is complete. Helps the user have closure - process is done.
-  Back button to flash more devices. Close button to close the app.
+    Back button to flash more devices. Close button to close the app.
 - signing executable file on windows, signing for other platforms? dmg on OSX?
 
 
@@ -41,7 +43,7 @@
 
 - device initially listening
 - device initially connecting to the cloud
-- ...
+- electron, SIM card removed
 
 ## Todo before Release
 - propagate exceptions on actor thread via callback

@@ -1,3 +1,8 @@
+"""
+The application controller that provides the key application functionality. The controller provides an interface
+ tasks are run on a background thread.
+"""
+
 import logging
 import unittest
 import threading
@@ -42,6 +47,7 @@ class Actor(threading.Thread):
                 if self.exception_handler:
                     self.exception_handler(cmd, args, kwargs, e)
 
+
 class ActorTest(unittest.TestCase):
 
     def raise_hell(self, e):
@@ -85,6 +91,7 @@ class ActiveObjectProxy(MethodWrapperProxy):
         def invoke_later(self, *args, **kwargs):
             proxy.actor.enqueue(method, args, kwargs)
         return invoke_later
+
 
 class DoitBackgroundTask:
     def doit(self):

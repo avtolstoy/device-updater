@@ -1,3 +1,8 @@
+"""
+Provides an implementation of a ymodem client and ymodem server. The client sends files to the target device, while
+the server receives files.  The ymodem implementation is not fully complete - only the features required to talk
+to Particle devices are implemented.
+"""
 import logging
 import unittest
 
@@ -14,6 +19,7 @@ from pipe import ThreadedPipe, RWPair
 from progress import ProgressSpan
 
 logger = logging.getLogger(__name__)
+serverlog = logging.getLogger(__name__+".server")
 
 
 def asbyte(v):
@@ -87,7 +93,10 @@ class LightYModemClient(LightYModemProtocol):
         return ch1
 
     def write(self, packet):
-        self.channel.write(packet)
+        p = packet
+        while p:
+            self.channel.write(p[0:100])
+            p = p[100:]
         return len(packet)
 
     def _send_ymodem_packet(self, data):
@@ -100,6 +109,13 @@ class LightYModemClient(LightYModemProtocol):
         if len(packet) != self.expected_packet_len:
             raise Exception("packet length is wrong!")
 
+        result = self._write_packet(packet)
+        if result!=self.ack:
+            self.sync()
+            result = self._write_packet(packet)
+        return result
+
+    def _write_packet(self, packet):
         written = self.write(packet)
         logger.debug("sent packet data, flush..." + str(written))
         self.flush()
@@ -133,6 +149,27 @@ class LightYModemClient(LightYModemProtocol):
         packet = tobytes(name) + asbyte(0) + tobytes(str(size)) + bytes([0x20])
         return self._send_ymodem_packet(packet)
 
+    def sync(self):
+        self.wait_until_ready(self.channel)
+
+    def wait_until_ready(self, channel:RawIOBase, timeout=60):
+        """
+        sends ' ' (space) and waits for the corresponding ACK message. Once we have 10 of these in a row we can be fairly
+        certain the device is ready for ymodem.
+        :param channel:
+        :param timeout:
+        :return:
+        """
+        success_count = 0
+        while success_count < 10:
+            while channel.readline():       # flush any existing data
+                success_count = 0
+            channel.write(b' ')
+            result = channel.read()
+            if result and result[0]==LightYModemProtocol.ack:
+                success_count += 1
+
+
     def transfer(self, file, channel:RawIOBase, progress:ProgressSpan):
         """
         Transfers a single file to the device and closes the session, so the device places the data in the
@@ -162,11 +199,11 @@ class LightYModemClient(LightYModemProtocol):
         self._send_close()
         return True
 
+
 class LightYModemException(Exception):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-serverlog = logging.getLogger(__name__+".server")
 
 class LightYModemServer(LightYModemProtocol):
     max_errors = 5
