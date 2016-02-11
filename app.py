@@ -102,7 +102,7 @@ class UpdaterController:
         self.model.view = proxy
 
     def _updater_state_changed(self, state):
-        if state != FlashState.in_progress:
+        if state not in [ FlashState.in_progress, FlashState.error ]:
             self.start_scan(0.25)
         else:
             self.stop_scan()
