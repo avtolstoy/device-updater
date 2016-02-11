@@ -152,8 +152,10 @@ class Gui(App):
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
         # This is needed to set the current working folder when extracting from a single executable
-        if hasattr(sys, '_MEIPASS'):
-            os.chdir(os.path.join(sys._MEIPASS))
+        if True or hasattr(sys, '_MEIPASS'):
+            p = os.path.join(sys._MEIPASS)
+            os.chdir(p)
+            print("changed folder to "+p)            
 
 
     """
