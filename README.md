@@ -31,14 +31,15 @@
 - DONE: Device text / image pulled from Device config
 - DONE: make ymodem more robust to any remaining data in the buffer sent over serial
 - DONE: work around USB unreliability in 0.4.9 with large packets
+- DONE: Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
+- DONE: build a small EXE that installs our certificate to the trusted certificate store. This exe is combined into an installer which is run silently.
 
-- Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
- - build a small EXE that installs our certificate to the trusted certificate store. This exe is combined into an installer which is run silently.
- -
 - Intro page? - tell the user what the tool does. next button swipes to flash page
 - Complete page? - page when update is complete. Helps the user have closure - process is done.
     Back button to flash more devices. Close button to close the app.
 - signing executable file on windows, signing for other platforms? dmg on OSX?
+- add Particle icon to packaged executable
+- add Particle icon to launched App
 
 
 ## Test plan
@@ -46,6 +47,17 @@
 - device initially listening
 - device initially connecting to the cloud
 - electron, SIM card removed
+
+### Testing Driver Installation
+
+(Windows only)
+
+Connect the device via USB, then right click and choose uninstall to remove the driver.
+Launch "regedit", and delete the key HKLM/Software/Particle/drivers. This will ensure the drivers are installed
+on next startup.  Unplug the device and plug in again to refresh the driver status.
+
+Now launch the device updater, and it should install the drivers (with a UAC prompt) and the device automatically detected.
+
 
 ## Todo before Release
 - propagate exceptions on actor thread via callback
