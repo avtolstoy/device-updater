@@ -11,7 +11,7 @@ SolidCompression = yes
 MinVersion = 6
 PrivilegesRequired = admin
 SignTool=signtool
-OutputBaseFilename=particle_drivers.exe
+OutputBaseFilename=particle_drivers
 OutputDir=.
 
 [Files]
@@ -31,10 +31,10 @@ Name: "{group}\Uninstall Particle Certtificate"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{app}\trustcertregister.exe"; Flags: "runhidden"; StatusMsg: "Installing Particle Certificate (this may take a few seconds) ...";
-Filename: "{sys}\pnputil"; Parameters: "{app}\photon.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "{app}\electron.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "{app}\spark_core.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "{app}\p1.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\photon.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\electron.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\spark_core.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\p1.inf"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
 
 [Registry]
 Root: HKLM; Subkey: "Software\Particle\drivers\serial"; ValueType: dword; ValueName: "version"; ValueData: "1"
