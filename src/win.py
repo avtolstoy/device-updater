@@ -7,14 +7,15 @@ from winreg import *
 from gui import Gui
 
 
-def needs_install(version):
+def needs_install(required_version):
     result = True
     try:
         aReg = ConnectRegistry(None,HKEY_LOCAL_MACHINE)
         aKey = OpenKey(aReg, r"SOFTWARE\Particle\drivers\serial")
-        qValue = QueryValueEx(oKey, r"version")
+        qValue = QueryValueEx(aKey, r"version")
         installed_version = int(qValue[0]) if qValue else 0
-        result = installed_version >= version
+        result = installed_version < required_version
+        print("installed driver version %s: required version %s" % (installed_version, required_version))
     except WindowsError as e:
         print(e)
     return result
@@ -49,7 +50,7 @@ current_drivers_version = 1
 
 def windows_setup():
     if needs_install(current_drivers_version):
-        subprocess.call("setup.exe")
+        subprocess.call(["resources/windows/particle_drivers.exe", "/VERYSILENT"])
 
 if __name__ == '__main__':
     # This is needed to set the current working folder when extracting from a single executable

@@ -4,7 +4,7 @@ block_cipher = None
 from kivy.deps import sdl2, glew
 
 
-a = Analysis(['..\\src\\gui.py'],
+a = Analysis(['..\\src\\win.py'],
              pathex=['.\\installer'],
              binaries=None,
              datas=[('..\\src\\gui.kv','.')],
