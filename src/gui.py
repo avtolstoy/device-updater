@@ -164,6 +164,15 @@ class Gui(App):
     def on_pause(self):
         return True
 
+def setup_working_dir():
+    # This is needed to set the current working folder when extracting from a single executable
+    if hasattr(sys, '_MEIPASS'):
+        p = os.path.join(sys._MEIPASS)
+        os.chdir(p)
+        print("changed folder to "+p)
+
+
 
 if __name__ == '__main__':
+    setup_working_dir()
     Gui().run()

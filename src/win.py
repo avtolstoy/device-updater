@@ -4,7 +4,7 @@ import subprocess
 import sys
 from winreg import *
 
-from gui import Gui
+from gui import Gui, setup_working_dir
 
 
 def needs_install(required_version):
@@ -53,11 +53,6 @@ def windows_setup():
         subprocess.call(["resources/windows/particle_drivers.exe", "/VERYSILENT"])
 
 if __name__ == '__main__':
-    # This is needed to set the current working folder when extracting from a single executable
-    if hasattr(sys, '_MEIPASS'):
-        p = os.path.join(sys._MEIPASS)
-        os.chdir(p)
-        print("changed folder to "+p)
-
+    setup_working_dir()
     windows_setup()
     Gui().run()

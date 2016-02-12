@@ -1,2 +1,2 @@
-python -m PyInstaller  osx_onefile.spec
+python -m PyInstaller -y  osx_onefile.spec
 ls -al dist
