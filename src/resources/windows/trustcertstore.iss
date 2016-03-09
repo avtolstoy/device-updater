@@ -30,11 +30,11 @@ Source: "p1.cat"; DestDir: "{app}"; Flags: replacesameversion promptifolder;
 Name: "{group}\Uninstall Particle Certtificates"; Filename: "{uninstallexe}"
 
 [Run]
-Filename: "{app}\trustcertregister.exe"; Flags: "runascurrentuser"; StatusMsg: "Installing Particle Certificate (this may take a few seconds) ...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\photon.inf"; Flags: "runascurrentuser"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\electron.inf"; Flags: "runascurrentuser"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\spark_core.inf"; Flags: "runascurrentuser"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a {app}\p1.inf"; Flags: "runascurrentuser"; StatusMsg: "Installing Serial Driver...";
+Filename: "{app}\trustcertregister.exe"; Flags: "runhidden"; StatusMsg: "Installing Particle Certificate (this may take a few seconds) ...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a photon.inf"; WorkingDir: "{app}"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a electron.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a spark_core.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil"; Parameters: "-i -a p1.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
 
 [Registry]
 Root: HKLM; Subkey: "Software\Particle\drivers\serial"; ValueType: dword; ValueName: "version"; ValueData: "1"
