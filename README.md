@@ -33,11 +33,12 @@
 - DONE: work around USB unreliability in 0.4.9 with large packets
 - DONE: Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
 - DONE: build a small EXE that installs our certificate to the trusted certificate store. This exe is combined into an installer which is run silently.
+ 
 
 - Intro page? - tell the user what the tool does. next button swipes to flash page
 - Complete page? - page when update is complete. Helps the user have closure - process is done.
     Back button to flash more devices. Close button to close the app.
-- signing executable file on windows, signing for other platforms? dmg on OSX?
+- signing executable file on windows, signing for other platforms? http://hearsum.ca/blog/using-authenticode-code-signing-certificates-with-os-xs-signing-tools.html
 - add Particle icon to packaged executable
 - add Particle icon to launched App
 
@@ -100,3 +101,23 @@ https://twistedpairdevelopment.wordpress.com/2012/03/19/installing-kivy-on-os-x-
 
 https://groups.google.com/forum/#!msg/kivy-users/MmhoPHBzLhk/oDnxOprSZ5UJ
 
+
+Android
+
+Need to use Linux - I used Ubuntu 14.0.3
+
+- sudo apt-get install python3, python-pip3, git
+- pip3 install virtualenv
+- virtualenv py3
+- source py3/bin/activate
+- git clone https://github.com/spark/device-updater
+- pip install -r device-updater/src/requirements.txt
+- pip install git+https://github.com/kivy/python-for-android.git
+- download python3crystax https://www.crystax.net/en/download
+- install android SDK version 15
+
+- installing build dependencies
+- cd install && pip install -r requirements.txt && CC=/usr/bin/gcc python2 -m pip install -r requirements_system_python.txt
+- ^^ dmgbuild requires python2
+
+https://kivy.org/planet/2016/01/python-for-android-now-supports-python-3%C2%A0apks/
