@@ -121,3 +121,26 @@ Need to use Linux - I used Ubuntu 14.0.3
 - ^^ dmgbuild requires python2
 
 https://kivy.org/planet/2016/01/python-for-android-now-supports-python-3%C2%A0apks/
+
+
+## Silentl Install of Windows Drivers
+
+- the driver installer is built using inno setup, from the file src/resources/windows/*.iss
+
+- the main app checks if HKLM/Software/Particle/drivers/serial/version matches the expected version. If not present or lower, the driver installer is launched.
+- the driver installer requires elevated permissions (so the user is presented with a UAC prompt)
+- the remainer of the isntaller is silent
+- it contains trustedcertstore.exe that contains the particle certificate and adds that certificate to the trusted issuers - this stops windows from prompting the user on each signed driver install
+- the installer copies the trustedcertstore.exe and all the drivers to a subfolder under program files.
+- the installer launches trustedstore.exe to register particle certificate as trusted
+- the installer uses pnputil -i -a %driver% to install each driver
+- the installer exits 
+
+## Known Quirks
+
+When the Windows drivers are first installed, if the device was already connected, then the device should be disconnected and reconnected for it to be detected by the application.
+
+For this reason, it's best to connect the device after starting the application.
+
+
+ 
