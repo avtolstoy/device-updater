@@ -22,8 +22,9 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
 		*[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
-          name='particle_updater',
+          name='particle_system_firmware.exe',
           debug=False,
-          strip=False,
+          strip=None,
           upx=False,
-          console=False )
+          console=False,
+          icon='resources/particle.ico', manifest=None )
