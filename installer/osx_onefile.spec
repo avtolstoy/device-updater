@@ -25,7 +25,7 @@ exe = EXE(pyz,
           name='particle_updater',
           debug=False,
           strip=False,
-          upx=True,
+          upx=False,
           console=False )
 coll = COLLECT(exe, Tree('../src'),
         Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2.framework'),Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2_image.framework'),Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2_ttf.framework'),Tree('/Applications/Kivy.app/Contents/Frameworks/SDL2_mixer.framework'),
@@ -35,3 +35,7 @@ coll = COLLECT(exe, Tree('../src'),
                strip=False,
                upx=True,
                name='particle_updater_dir')
+app = BUNDLE(exe,
+             name='particle_updater.app',
+             icon='resource/particle.icns',
+             bundle_identifier=None)

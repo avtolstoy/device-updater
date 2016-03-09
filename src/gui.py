@@ -158,6 +158,7 @@ class Gui(App):
     """
     def build(self):
         self.title = "Particle Device Updater"
+        self.icon = "resources/particle.png"
         self.thread = threading.current_thread()
         return ConnectedDevice()
 

@@ -26,4 +26,5 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           upx=False,
-          console=True )
+          console=True,
+          icon='resources/particle.ico' )
