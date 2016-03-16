@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 use_mock = False
+# Use a mock updater rather than the real thing (saves wearing a device's flash memory)
 
 
 class UpdateFirmwareTask:
@@ -45,9 +46,13 @@ class UpdateFirmwareTask:
         if use_mock:
             p = self.progress
             x = p.min
+            big_delay = False
             while x <= p.max:
                 self.progress.update(x)
                 time.sleep(0.01)
+                if not big_delay and x>p.max/2:
+                    time.sleep(5)
+                    big_delay = True
                 x += 1024*2
             p.update(p.max)
             result = True
