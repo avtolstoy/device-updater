@@ -126,7 +126,6 @@ class ConnectedDevice(Widget):
         self.making_progress = True
         self.go_text = text
 
-
     def update(self, item):
         """Notification from the ConnectedDeviceModel"""
         self.device = item
@@ -156,17 +155,6 @@ class FlashView(UpdaterEvents):
         self.root.progress = (current-min) / (max-min)
 
 
-
-"""
-class DisplayPopup(ExceptionHandler):
-    exception = None
-
-    def handle_exception(self, inst):
-        if self.exception:          # prevent recursion
-            return ExceptionManager.STOP
-        self.exception = inst
-                """
-
 class Gui(App):
 
     def __init__(self, *args, **kwargs):
@@ -176,6 +164,7 @@ class Gui(App):
     Manages the View and View Model. Changes to the view model
     """
     def build(self):
+        Window.clearcolor = (1, 1, 1, 1)
         self.title = "Particle Device Updater"
         self.icon = "resources/particle.png"
         self.thread = threading.current_thread()
@@ -184,13 +173,13 @@ class Gui(App):
     def on_pause(self):
         return True
 
+
 def setup_working_dir():
     # This is needed to set the current working folder when extracting from a single executable
     if hasattr(sys, '_MEIPASS'):
         p = os.path.join(sys._MEIPASS)
         os.chdir(p)
         print("changed folder to "+p)
-
 
 
 if __name__ == '__main__':
