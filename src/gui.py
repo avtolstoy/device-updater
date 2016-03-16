@@ -1,20 +1,25 @@
 import os
-import subprocess
+import sys
 import threading
 
 import kivy
-import sys
 from kivy.animation import Animation
 from kivy.app import App
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.properties import StringProperty, ObjectProperty, NumericProperty, BooleanProperty
 from kivy.uix.widget import Widget
 
 from app import UpdaterEvents, create_threaded_controller
 from method_proxy import MethodWrapperProxy
+from spinner import MDSpinner
 from updater import FlashState
 
 kivy.require('1.9.1')
+
+from kivy.factory import Factory
+
+Factory.register('MDSpinner', cls=MDSpinner)
 
 
 def kivy_event_thread_dispatch(proxy, target, name, f):
@@ -71,12 +76,17 @@ class ConnectedDevice(Widget):
     """
     in_progress = BooleanProperty(False)
 
+    """
+    Set to false when the device is updating but progress has stalled.
+    """
+    making_progress = BooleanProperty(True)
+
     button_state_details = {
         FlashState.not_connected: ("( NO DEVICE PRESENT )"),
-        FlashState.not_started: ( large(" UPDATE DEVICE TO v{version} ") ),
-        FlashState.in_progress: ( large(" UPDATING TO v{version}... ") ),
-        FlashState.error: ( large(" AW...  ;-( ") ),
-        FlashState.complete: ( large(" UPDATE COMPLETE "))
+        FlashState.not_started: ( large(" Update to {version} ") ),
+        FlashState.in_progress: ( large(" Updating to {version}") ),
+        FlashState.error: ( large(" Aw, something bad happened...  ;-( ") ),
+        FlashState.complete: ( large(" Update Complete "))
     }
 
     def __init__(self, **kwargs):
@@ -93,6 +103,14 @@ class ConnectedDevice(Widget):
     def on_device(self, instance, value):
         self.device_changed()
 
+    def on_progress(self, instance, value):
+        self.making_progress = True
+        Clock.unschedule(self.inactivity)
+        Clock.schedule_once(self.inactivity, 1) # flag inactivity after 1 second
+
+    def inactivity(self, dt):
+        self.making_progress = False
+
     def device_changed(self):
         opacity = 1.0 if self.device else 0.2
         anim = Animation(device_opacity=opacity, duration=0.25)
@@ -105,6 +123,7 @@ class ConnectedDevice(Widget):
 
     def update_button(self):
         text = self.button_state_details.get(self.update_state).format(version=self.update_version)
+        self.making_progress = True
         self.go_text = text
 
 

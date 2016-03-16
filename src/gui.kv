@@ -90,6 +90,16 @@
             background_normal: "atlas://data/images/defaulttheme/button_pressed"
             background_down: "atlas://data/images/defaulttheme/button"
 
+        MDSpinner:
+            id: spinner
+            determinate: False
+            visible: connected.in_progress and not connected.making_progress
+            size: [ 30, 30 ]
+            size_hint: (None,None)
+            color: [ 1, 1, 1, 1 ]
+            x: bar.right - self.width - 30 + 0 if self.visible else offscreen
+            y: bar.center_y - self.height / 2
+
         Label:
             id: not_connected
             markup: True
