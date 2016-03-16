@@ -11,6 +11,7 @@
 #:set particle_red (220/255, 30/255, 0, 1)
 
 #: import FlashState updater.FlashState
+#: import ew kivy.uix.effectwidget
 
 
 <GoButton@Button, Progress@Label>:
@@ -53,7 +54,6 @@
                 allow_stretch: True
                 source: 'assets/particle-horizontal-dark-093e6b1e.png'
 
-        #: import ew kivy.uix.effectwidget
         EffectWidget:
             #effects: [ ew.HorizontalBlurEffect(size=20.0), ew.VerticalBlurEffect(size=20.0) ]
             id: device
