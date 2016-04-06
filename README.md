@@ -33,14 +33,14 @@
 - DONE: work around USB unreliability in 0.4.9 with large packets
 - DONE: Install Serial driver on Windows if needed using either windows standard command line tools or libdwi
 - DONE: build a small EXE that installs our certificate to the trusted certificate store. This exe is combined into an installer which is run silently.
- 
+- DONE: sign executable/package on OSX and Windows 
+- DONE: add Particle icon to packaged executable
+- DONE: add Particle icon to launched App
+- DONE: busy spinner when progress doesn't update
 
 - Intro page? - tell the user what the tool does. next button swipes to flash page
 - Complete page? - page when update is complete. Helps the user have closure - process is done.
     Back button to flash more devices. Close button to close the app.
-- signing executable file on windows, signing for other platforms? http://hearsum.ca/blog/using-authenticode-code-signing-certificates-with-os-xs-signing-tools.html
-- add Particle icon to packaged executable
-- add Particle icon to launched App
 
 
 ## Test plan
@@ -61,7 +61,7 @@ Now launch the device updater, and it should install the drivers (with a UAC pro
 
 
 ## Todo before Release
-- propagate exceptions on actor thread via callback
+- propagate exceptions on actor thread via callback (DONE?)
 - ymodem from listening mode
 - Add exception handler for app that displays a popup then exits.
 
