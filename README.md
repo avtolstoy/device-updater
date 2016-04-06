@@ -1,3 +1,29 @@
+# Device Updater
+
+The device updater is a GUI app that flashes the latest firmware to your Electron or Photon. But why, we have Particle CLI, and OTA updates from the IDE.
+
+The main reason for the updater's existence is that it allows the firmware to be flashed to the Electron simply and easily, without incurring any cost from data use. While the CLI does this too, the updater offers a simple "download and run" experience.
+
+## Getting Started
+
+This is just an outline - fuller documentation will follow soon!
+
+- Download the updater. Choose either the OS X or Windows version.
+- Launch the updater:
+ - Windows: double-click the downloaded file. 
+ - OS X: the file is a zip. After clicking the zip file, the system extracts the `particle_system_firmware` app. Double click that in Finder.
+- You will see onscreen prompts such as "Are you sure you want to run this?". Click OK. 
+- When the Updater starts, you'll see a white window, with the Particle logo in the top left.
+- Connect your device to the computer via a USB cable - the updater will detect the connected device.
+- Click the large blue "Update" button
+- The device will be updated. It takes a minute or so.
+- Once updated, close the updater app. Now your device has the latest system firmware. 
+
+
+
+# Rough Developer Notes
+
+Unless you're planning on hacking on the code, you can skip the rest of this readme!
 
 ## Features
 
@@ -123,7 +149,7 @@ Need to use Linux - I used Ubuntu 14.0.3
 https://kivy.org/planet/2016/01/python-for-android-now-supports-python-3%C2%A0apks/
 
 
-## Silentl Install of Windows Drivers
+## Silent Install of Windows Drivers
 
 - the driver installer is built using inno setup, from the file src/resources/windows/*.iss
 
