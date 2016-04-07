@@ -13,6 +13,7 @@ PrivilegesRequired = admin
 SignTool=signtool
 OutputBaseFilename=particle_drivers
 OutputDir=.
+ArchitecturesInstallIn64BitMode=x64
 
 [Files]
 Source: "trustcertregister.exe"; DestDir: "{app}"; Flags: replacesameversion promptifolder;
@@ -31,10 +32,10 @@ Name: "{group}\Uninstall Particle Certtificates"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{app}\trustcertregister.exe"; Flags: "runhidden"; StatusMsg: "Installing Particle Certificate (this may take a few seconds) ...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a photon.inf"; WorkingDir: "{app}"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a electron.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a spark_core.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
-Filename: "{sys}\pnputil"; Parameters: "-i -a p1.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil.exe"; Parameters: "-i -a photon.inf"; WorkingDir: "{app}"; Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil.exe"; Parameters: "-i -a electron.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil.exe"; Parameters: "-i -a spark_core.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
+Filename: "{sys}\pnputil.exe"; Parameters: "-i -a p1.inf"; WorkingDir: "{app}";Flags: "runhidden"; StatusMsg: "Installing Serial Driver...";
 
 [Registry]
 Root: HKLM; Subkey: "Software\Particle\drivers\serial"; ValueType: dword; ValueName: "version"; ValueData: "1"
