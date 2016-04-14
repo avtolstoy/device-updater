@@ -41,8 +41,8 @@ def relative_file(path):
 
 
 class Devices:
-    photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", "0.5.0-rc.1", 2)
-    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", "0.5.0-rc.1", 2)
+    photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", "0.5.0-rc.2", 2)
+    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", "0.5.0-rc.2", 2)
     none = []
     all = [ photon, electron ]
 
