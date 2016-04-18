@@ -1,0 +1,36 @@
+environment:
+  enc_secret:
+    secure: QP6LDEX47A0b2+MJGgbrtjSfv57oM4/0nYvav/4347Y=
+  cer_secret:
+    secure: m5jRlgWdc9K8n6cQNYxLiQ==
+  SIGNTOOL_PATH:  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin
+
+  matrix:
+  - PYTHON: "C:\\Python34"
+    PYTHON_VERSION: "3.4.x" # currently 3.4.3
+    PYTHON_ARCH: "32"
+
+install:
+  - nuget install secure-file -ExcludeVersion
+  - secure-file\tools\secure-file -decrypt cert.p12.enc -secret %enc_secret%
+  - setup_appveyor.bat
+  - install.bat
+
+build: off
+
+artifacts:
+  - path: installer/dist/particle_firmware_updater.exe
+
+
+deploy:
+  release: $(APPVEYOR_REPO_TAG_NAME)
+  description: 'device updater release $(APPVEYOR_REPO_TAG_NAME)'
+  provider: GitHub
+  auth_token:
+    secure: ra3kVtgote/ZaDOhGRJDeASq1xj+PB/ZX7UuBrnj0O+UCzf2pOJWdM2qszrhGKo0
+  artifact: installer/dist/particle_firmware_updater.exe
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
