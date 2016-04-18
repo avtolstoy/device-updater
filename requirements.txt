@@ -1,6 +1,9 @@
 kivy==1.9.1
 pyinstaller==3.2
 pyserial==3.0.1
+pypiwin32==219
+kivy.deps.glew==0.1.4
+kivy.deps.sdl2==0.1.12
 docutils==0.12
 pygments==2.1
 

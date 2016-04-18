@@ -9,7 +9,7 @@ pip install -r requirements.txt
 pip install -r requirements-win.txt
 
 cd installer
-python -m PyInstaller -y --onefile win_onefile.spec
+python -m PyInstaller -y --onefile win_onefile.spec --clean --manifest manifest.xml
 "%SIGNTOOL_PATH%\signtool.exe" sign /v /f ../cert.p12 /p %cer_secret% /tr http://tsa.starfieldtech.com dist\particle_system_firmware.exe
 cd ..
  
