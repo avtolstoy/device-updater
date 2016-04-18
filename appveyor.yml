@@ -1,12 +1,12 @@
 environment:
   enc_secret:
-     secure: QP6LDEX47A0b2+MJGgbrtjSfv57oM4/0nYvav/4347Y=
+    secure: QP6LDEX47A0b2+MJGgbrtjSfv57oM4/0nYvav/4347Y=
   cer_secret:
     secure: m5jRlgWdc9K8n6cQNYxLiQ==
 
 install:
   - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decript cert.p12.enc -secret %enc_secret%
+  - secure-file\tools\secure-file -decrypt cert.p12.enc -secret %enc_secret%
   - setup_appveyor.bat
   - install.bat
 
