@@ -1,5 +1,12 @@
+os: osx
+
 language: python
-python:
-- '3.4'
-install: pip install -r requirements.txt
-script: "./test.sh"
+install:
+- brew update
+- brew install pyenv
+- pyenv install 3.4.3
+- pyenv local 3.4.3 
+- "./install-osx.sh"
+
+:env:
+  secure: jmEz6PudTc2QHtS7ZAHbtVWisR0fsHP1wBNzzYvrwNNCdX2XUWjZLOSgu+A8ecQHgLsvfThTMkhzIlqVirfFdHeZK71Pbd1Z/caBSMJ/bMK67x+Ba8lFL0SV0YUVoCkS4CO8he027Q2AJL90aNjB7+YC4onmszug69pGYwi9DWrHaFsKpIQktEhjzbE0X2i0YW6u44RerY5RNioYcHNkHK1XM4wHA2WM4H9FbZfGD4ZJSJwEi2W8WpEARnFEDv1UM5AsJF4OqiM+mE3HZJlBHt/RU2Ocon8WuOcFU1P5GqhE6xOyS5fls02HHCFaxSO/T0fl92W67HQhNgwwUP3TvBGT7QdYmyxU/LuwXpHug6A/VAOcFx9JGMYSs8+B2cUeY7EBIswHwRg0QmSZ2jvP+jBcQW8bj3oQl/k9/SFHaiAuvYdNeNpKGQuiQS5WE/lq1YazfOYRGweiYAsi6PubqUqxW7jdeCKOCjguNi9M7TpaDDezNay+peqexz9lmNCSeAej8ylnjYV4rCdWE05fh4pG5GijsArmwEjyweWcxCdx1XQu6PV0xawtLOMzm9PIJ/jL0tWrteIvKTuH1z1jQ2rQ0IrNsgQ36wOYDDhvpGGLxlBr05tYXrM7fdmAE0s5kvvzYGF6QsAKQuu4ppw6opY+L/98O3LM3oNL7qVQuZ0=
