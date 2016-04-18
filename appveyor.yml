@@ -1,8 +1,7 @@
 environment:
   enc_secret:
      secure: QP6LDEX47A0b2+MJGgbrtjSfv57oM4/0nYvav/4347Y=
-
- cer_secret:
+  cer_secret:
     secure: m5jRlgWdc9K8n6cQNYxLiQ==
 
 install:
