@@ -16,5 +16,7 @@ install:
   - setup_appveyor.bat
   - install.bat
 
+build: off
+
 artifacts:
   - path: installer/dist/particle_firmware_updater.exe
