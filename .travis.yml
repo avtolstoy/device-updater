@@ -1,6 +1,8 @@
 os: osx
 
-language: python
+language: node
+# python doesn't work on osx with travis
+
 install:
 - brew update
 - brew install pyenv
