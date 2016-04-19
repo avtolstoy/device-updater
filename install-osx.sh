@@ -8,7 +8,7 @@ source venv/bin/activate
 
 brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
 pip install -I Cython==0.23
-CC=cc CXX=c++ USE_OSX_FRAMEWORKS=0 pip install kivy
+CC=cc CXX=c++ USE_OSX_FRAMEWORKS=0 pip install kivy > kivy_install.txt
 
 brew install pygame
 
