@@ -2,6 +2,7 @@ os:
 # - osx
 
 language: generic
+sudo: required
 
 # python doesn't work on osx with travis
 
