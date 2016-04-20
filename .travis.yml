@@ -2,12 +2,9 @@ os:
 # - osx
 
 language: generic
+
 # python doesn't work on osx with travis
 
-matrix:
-   include:
-     - os: linux
-       python: 3.4
 
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup-osx.sh" && "./install-osx.sh" ; else "./install_linux.sh"; fi
