@@ -1,5 +1,4 @@
 os:
- - linux
 # - osx
 
 language: generic
@@ -11,7 +10,7 @@ matrix:
        python: 3.4
 
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; ./setup-osx.sh && ./install-osx.sh; else ./install_linux.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup-osx.sh" && "./install-osx.sh" ; else "./install_linux.sh"; fi
 
 
 :env:
