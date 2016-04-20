@@ -1,3 +1,16 @@
+sudo apt-get install -y \
+    build-essential \
+    python3-dev \
+    libsdl2-dev \
+    libsdl2-image-dev \
+    libsdl2-mixer-dev \
+    libsdl2-ttf-dev \
+    libportmidi-dev \
+    libswscale-dev \
+    libavformat-dev \
+    libavcodec-dev \
+    zlib1g-dev
+
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 
 export PATH="/home/travis/.pyenv/bin:$PATH"
