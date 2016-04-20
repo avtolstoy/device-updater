@@ -18,3 +18,5 @@ pip install Cython==0.23 > cython.txt
 
 pip install -r requirements.txt
 
+cd installer
+python -m PyInstaller  -y --windowed linux_onefile.spec
