@@ -41,10 +41,11 @@ def relative_file(path):
 
 
 class Devices:
-    photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", "0.5.0-rc.1", 2)
-    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", "0.5.0-rc.1", 2)
+    photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", "0.5.1", 2)
+    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", "0.5.1", 2)
+    p1 = UpgradableDevice("P1", 0x2b04, 0xc008, "p1", "0.5.1", 2)
     none = []
-    all = [ photon, electron ]
+    all = [ photon, electron, p1 ]
 
 
 class DevicesTest(unittest.TestCase):
