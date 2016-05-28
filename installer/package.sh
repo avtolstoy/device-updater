@@ -11,7 +11,7 @@ if [ -z  "${VERSION}" ]; then
 fi
 
 export appname=particle_device_upgrader
-export fqname=$appname-$VERSION
+export fqname=$appname-$VERSION-osx
 echo "Building $fqname"
 
 rm -rf dist
