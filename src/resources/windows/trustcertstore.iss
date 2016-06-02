@@ -1,8 +1,8 @@
 [Setup]
 AppName = Particle USB Drivers
 AppVerName = Particle USB Drivers 1.0.0.0
-AppPublisher = Particle Indistries Ltd.
-AppPublisherURL = http://particle.io
+AppPublisher = Particle Industries, inc.
+AppPublisherURL = https://particle.io
 AppVersion = 1.0.0.0
 DefaultDirName = {pf}\Particle\USBDrivers
 DefaultGroupName = Particle
