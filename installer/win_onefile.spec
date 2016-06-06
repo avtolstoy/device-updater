@@ -27,4 +27,4 @@ exe = EXE(pyz,
           strip=None,
           upx=False,
           console=False,
-          icon='resources/particle.ico', manifest=None )
+          icon='resources/particle.ico', manifest='manifest.xml' )
