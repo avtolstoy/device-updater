@@ -1,8 +1,11 @@
 # -*- mode: python -*-
+import os
+appname=os.environ['appname']
+fqname=os.environ['fqname']
+version=os.environ['VERSION']
 
 block_cipher = None
 from kivy.tools.packaging.pyinstaller_hooks import get_deps_all, hookspath, runtime_hooks
-
 
 a = Analysis(['../src/gui.py'],
              pathex=['./installer'],
@@ -22,7 +25,7 @@ exe = EXE(pyz,
 	  a.binaries,
 	  a.datas,
 	  a.zipfiles,
-          name='particle_system_firmware',
+          name=fqname,
           debug=False,
           strip=False,
           upx=False,
@@ -34,8 +37,8 @@ coll = COLLECT(exe, Tree('../src'),
                a.datas,
                strip=False,
                upx=True,
-               name='particle_system_firmware_dir')
+               name=appname)
 app = BUNDLE(exe,
-             name='particle_system_firmware.app',
+             name=fqname+'.app',
              icon='resources/particle.icns',
              bundle_identifier=None)

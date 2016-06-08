@@ -169,4 +169,25 @@ When the Windows drivers are first installed, if the device was already connecte
 For this reason, it's best to connect the device after starting the application.
 
 
- 
+## Updating system firmware versions
+
+- open `src/app.py` and update the `fwversion` variable.
+- clear out any binaries in `src/resources/[photon|p1|electron]``
+- download the firmware system binaries from github releases
+- commit and tag with the new release
+
+## Building a new version
+
+### OSX
+
+```
+$ cd installer
+$ ./package.sh <version>
+```
+
+### Windows
+
+```
+> cd installer
+> package.bat <version>
+```

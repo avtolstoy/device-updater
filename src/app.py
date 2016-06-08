@@ -40,11 +40,15 @@ def relative_file(path):
     return path
 
 
+fwversion = '0.5.1'
+
+
 class Devices:
-    photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", "0.5.0", 2)
-    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", "0.5.0", 2)
+    photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", fwversion, 2)
+    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", fwversion, 2)
+    p1 = UpgradableDevice("P1", 0x2b04, 0xc008, "p1", fwversion, 2)
     none = []
-    all = [ photon, electron ]
+    all = [ photon, electron, p1 ]
 
 
 class DevicesTest(unittest.TestCase):
