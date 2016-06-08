@@ -33,4 +33,9 @@ codesign -s $signid --force --verify --verbose $fqname.app
 zip -r $fqname.zip $fqname.app
 
 sudo spctl -a -v $fqname.app
+
+rm -rf dist/$appname/
+rm -rf dist/$fqname.app/
+rm dist/$fqname
+
 popd 
