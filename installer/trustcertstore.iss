@@ -1,8 +1,8 @@
 [Setup]
 AppName = Particle Devices Trusted Certificate
 AppVerName = Particle Devices Trusted Certificate 1.0.0.0
-AppPublisher = Particle Indistries Ltd.
-AppPublisherURL = http://akeo.ie
+AppPublisher = Particle Industries, Inc.
+AppPublisherURL = https://particle.io
 AppVersion = 1.0.0.0
 DefaultDirName = {pf}\Particle\TrustCert
 DefaultGroupName = Particle
