@@ -1,0 +1,2 @@
+export appname=particle_firmware_manager
+

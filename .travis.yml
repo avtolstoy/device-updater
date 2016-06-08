@@ -1,15 +1,16 @@
 os:
- - osx
-
+- osx
 language: generic
 sudo: required
-
-# python doesn't work on osx with travis
-
-
 install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup-osx.sh" && "./install-osx.sh" ; else "./install_linux.sh"; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh";
+  else "./install_linux.sh"; fi
+env:
+  global:
+    secure: tqP3xUHLZQFVGztW2tECV6nookV9+q9X6nSKgK4gceT6bQ4JKQsZ/bNlHxIbA+8GpClSxNpJ+BbMgujataSBUACMr/MVnr6DhP3poqpCPlCRF+1dA6SvchXOPlywpxd6/xYvti6t9puZ2up9TUaBJWqWcbSk6dCUgX3NbBdCSbBmc1VbLPWBWyoVDZxF/dK8dM8q/5qvOqZEo2QXmEBm9rpASw3kuIWMhUxhcLMksjROvL/yEdoDJ1fiVrUuZeT5tkelX36fRrjFD5xvEhh4nXqbLRVtlHeV2H7KEcKELPB8DC41dKVa9FSY5ABhDsv+Wap+8cGJG2ou/Sog4oo0JqxvU8Bn1Y70sCbUbKt1KPRzdhfEwd4em/FWIEvkQTK9fcD5bxsNEZsx6+puwNpumOlFJ6BRSanfWB9kJ8IR/i5sWOqW2y4czQzRkmQ5kpFIpoZRS+QoOW4LddFqrqUkTzCXfRmuXs8nYNdT7aZW1GoCPYXTEIPDw/V0ZE188F5/Qu3sqYLCiw8u8Ccedzd+GRPzNhu/31q9mCFebtmvb1uPrO6dMNt7Rnp3KSik6HGuBZQmb2xJmENKHU87BIvivEybOsQHeRoNiJd0ZCWAp37OGQ92Jyp1pGsl/+dW7QW20/LEULQCZh3MuRb1uLv5cqOSn6lZBmaeJ/fG88QoIiw=
+dd:
+  secure: FbGCizI7KeUsp7l5LH43hMWACKH5DeXR/36ubLaentKEyGXj/UEiWqA4EA4c0/mZ4CBV/Ppob9jHP7HsX+gCmoCSLj4azDevtocCcMa53qaZLXW9Vtiul3QBCMfEIG6YMoqO0d/3YPmopOctvXco0Z2qaG37S0DMFIR2+a56TNbFknvHyfcPBz8WESo8N36JkodSHzRF5kXFKRHeynGTkicj4nkZoYa0xA+zviOr4tNH1imsVVqpy4qOiqY00FOV3vSf3XXzBzG8hEUc+0QSF+6lALYUct7HLb4jiNnibajdaUqOj1HJbwsY4udAHr8X51A2eSxZYO6GO0XAlIUA2RXpElFx6aa4vI6NJc1B/FGC22hLOxTVQCzNR/JzxpqkCwDg+V0uEH6UXX5LeyHAb3pJrAZyQOE4onYg5zk7cPqDYl6oJCshLBVgJ7R2zILP3fd+uWNpg8YH1FXAFKQXKmyWuytx9X2Hxfj6AOxkX5RK9Uzs71HznUBg2r1jp93TEv+o4k9rBciYdyWlK4ZKZbzGPG9JgpEe8dcP9eV0pGgW/9++i0vBvGNHYLHPlHAYJTLgsFX0t4TfINeN6MV69ne5J8uidnFFpw4otNqzVt1WvcSwtdpcxVeQA2y/EIy/d0FcR7JRjIz55T2zn5olfpaVajJQwoh2KAeTvbhp0Yg=
 
-
-:env:
-  secure: jmEz6PudTc2QHtS7ZAHbtVWisR0fsHP1wBNzzYvrwNNCdX2XUWjZLOSgu+A8ecQHgLsvfThTMkhzIlqVirfFdHeZK71Pbd1Z/caBSMJ/bMK67x+Ba8lFL0SV0YUVoCkS4CO8he027Q2AJL90aNjB7+YC4onmszug69pGYwi9DWrHaFsKpIQktEhjzbE0X2i0YW6u44RerY5RNioYcHNkHK1XM4wHA2WM4H9FbZfGD4ZJSJwEi2W8WpEARnFEDv1UM5AsJF4OqiM+mE3HZJlBHt/RU2Ocon8WuOcFU1P5GqhE6xOyS5fls02HHCFaxSO/T0fl92W67HQhNgwwUP3TvBGT7QdYmyxU/LuwXpHug6A/VAOcFx9JGMYSs8+B2cUeY7EBIswHwRg0QmSZ2jvP+jBcQW8bj3oQl/k9/SFHaiAuvYdNeNpKGQuiQS5WE/lq1YazfOYRGweiYAsi6PubqUqxW7jdeCKOCjguNi9M7TpaDDezNay+peqexz9lmNCSeAej8ylnjYV4rCdWE05fh4pG5GijsArmwEjyweWcxCdx1XQu6PV0xawtLOMzm9PIJ/jL0tWrteIvKTuH1z1jQ2rQ0IrNsgQ36wOYDDhvpGGLxlBr05tYXrM7fdmAE0s5kvvzYGF6QsAKQuu4ppw6opY+L/98O3LM3oNL7qVQuZ0=
+before_install:
+- openssl aes-256-cbc -K $encrypted_3661a0358acc_key -iv $encrypted_3661a0358acc_iv
+  -in installer/key.p12.travis.enc -out installer/key.p12 -d

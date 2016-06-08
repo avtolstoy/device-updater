@@ -67,3 +67,4 @@ target/
 .idea/
 venv/
 installer/sign.bat
+.safe
