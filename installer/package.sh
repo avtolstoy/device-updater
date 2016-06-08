@@ -1,11 +1,29 @@
-python -m PyInstaller  -y --windowed --icon=resources/particle.icns osx_onefile.spec
-rm -rf particle_system_firmware.app
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+VERSION="${VERSION:-$1}"
+export VERSION
+
+if [ -z  "${VERSION}" ]; then
+  echo "Error: VERSION is not defined."
+  exit 1
+fi
+
+export appname=particle_device_upgrader
+export fqname=$appname-$VERSION-osx
+echo "Building $fqname"
+
+rm -rf dist
+
+appname="$appname" fqname="$fqname" python -m PyInstaller  -y --windowed --icon=resources/particle.icns osx_onefile.spec --clean
+
 pushd dist
 signid="TNJ67X9MQD"
-codesign -s $signid particle_system_firmware.app/Contents/MacOS/particle_system_firmware
-codesign -s $signid --force --verify --verbose particle_system_firmware.app
-rm particle_system_firmware.zip
-zip -r particle_system_firmware.zip particle_system_firmware.app
+codesign -s $signid $fqname.app/Contents/MacOS/$fqname
+codesign -s $signid --force --verify --verbose $fqname.app
 
-sudo spctl -a -v particle_system_firmware.app
+zip -r $fqname.zip $fqname.app
+
+sudo spctl -a -v $fqname.app
 popd 

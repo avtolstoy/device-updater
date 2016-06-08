@@ -1,5 +1,9 @@
 # -*- mode: python -*-
 
+appname=os.environ['APPNAME']
+fqname=os.environ['FQNAME']
+version=os.environ['VERSION']
+
 block_cipher = None
 from kivy.deps import sdl2, glew
 
@@ -22,9 +26,9 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
 		*[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
-          name='particle_system_firmware.exe',
+          name=fqname+'.exe',
           debug=False,
           strip=None,
           upx=False,
           console=False,
-          icon='resources/particle.ico', manifest=None )
+          icon='resources/particle.ico', manifest='manifest.xml' )
