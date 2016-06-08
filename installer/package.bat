@@ -6,7 +6,7 @@ set FQNAME=%APPNAME%-%VERSION%-windows
 
 rd /s /y dist
 
-python -m PyInstaller -y --onefile win_onefile.spec
+python -m PyInstaller -y --onefile win_onefile.spec --clean
 call sign.bat
 goto done
 
