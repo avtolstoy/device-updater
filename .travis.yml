@@ -23,5 +23,8 @@ deploy:
   local-dir: installer/dist
   upload-dir: updater
   acl: public_read
-  on:
-    repo: spark/device-updater
+
+cache:
+  directories:
+  - /usr/local/opt/pyenv/versions/
+  pip
