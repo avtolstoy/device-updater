@@ -6,6 +6,10 @@ pip install virtualenv
 virtualenv venv
 source venv/bin/activate
 
+echo "Virtual Env installed"
+which python
+pyenv which python
+
 brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
 pip install -I Cython==0.23
 CC=cc CXX=c++ USE_OSX_FRAMEWORKS=0 pip install kivy > kivy_install.txt
