@@ -16,12 +16,11 @@ install:
   - secure-file\tools\secure-file -decrypt installer/windows_key.p12.appveyor.enc -out installer/windows_key.p12 -secret %enc_secret%
   - setup_appveyor.bat
   - install.bat
-
+  - appveyor PushArtifact installer\dist\%FQNAME%.exe -FileName %FQNAME%.exe -DeploymentName updater
+  
 build: off
 
-after_build:
-  appveyor PushArtifact installer\dist\%FQNAME%.exe -FileName %FQNAME%.exe -DeploymentName updater
-
+  
 deploy:
 - release: $(APPVEYOR_REPO_TAG_NAME)
   description: 'Particle Firmware Manager release $(APPVEYOR_REPO_TAG_NAME)'
