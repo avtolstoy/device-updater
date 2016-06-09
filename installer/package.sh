@@ -23,7 +23,7 @@ echo "Building $fqname"
 rm -rf dist
 
 # build the python installer
-appname="$appname" fqname="$fqname" python -m PyInstaller  -y --windowed --icon=resources/particle.icns osx_onefile.spec --clean
+appname="$appname" fqname="$fqname" python -m pyinstaller  -y --windowed --icon=resources/particle.icns osx_onefile.spec --clean
 
 pushd dist
 
