@@ -21,7 +21,7 @@ build: off
 
 artifacts:
   - path: installer\dist\*.exe
-	name: updater
+    name: updater
 
 deploy:
 - release: $(APPVEYOR_REPO_TAG_NAME)
