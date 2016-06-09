@@ -1,9 +1,13 @@
 # when runnign this for local development, you probably want to have a virtualenv already setup and activated
 
-which python
-pyenv which python
+which python3
+pyenv which python3
 which pip
 pyenv which pip
+
+python3 -m pip install virtualenv
+virtualenv venv
+source venv/bin/activate
 
 brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
 pip install -I Cython==0.23
