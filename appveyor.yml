@@ -1,7 +1,9 @@
 environment:
   enc_secret:
-    secure: QP6LDEX47A0b2+MJGgbrtjSfv57oM4/0nYvav/4347Y=
-  SIGNTOOL_PATH:  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin
+    secure: iBAwCL/1SI3W95nhf1Bx9gbh+ORu8dsPBD7G4bFdRhU=
+  key_secret:
+    secure: WBc0/0gRXwnK61Clw6HY0SAyEHSqFPYrScVBoXcjTUo=
+  SIGNTOOL_PATH:  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\
 
   matrix:
   - PYTHON: "C:\\Python34"
@@ -10,14 +12,14 @@ environment:
 
 install:
   - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt installer/cert_appveyor.p12.enc -secret %enc_secret%
+  - secure-file\tools\secure-file -decrypt installer/windows_key.p12.appveyor.enc -secret %enc_secret%
   - setup_appveyor.bat
   - install.bat
 
 build: off
 
 artifacts:
-  - path: installer/dist/particle_firmware_updater.exe
+  - path: installer/dist/*.exe
 
 
 deploy:
