@@ -4,7 +4,7 @@ set VERSION=%1
 set APPNAME=particle_firmware_manager
 set FQNAME=%APPNAME%-%VERSION%-windows
 
-rd /s dist
+rd /y /s dist
 
 python -m PyInstaller -y --onefile win_onefile.spec --clean
 
