@@ -8,14 +8,15 @@ matrix:
       env: pyver=3.5 pydist=homebrew
 
 install:
-  - echo "Instaling python version $pyver, dist=$pydist"
-  - if [ $pyver != pypy ] && [ $pyver != pypy3 ]; then git clone https://github.com/gappleto97/terryfy; source terryfy/travis_tools.sh; get_python_environment  $pydist $pyver; fi
-  - if [ $pyver == pypy ] || [ $pyver == pypy3 ]; then brew install $pyver; PYTHON_EXE=$pyver; curl $GET_PIP_URL > $DOWNLOADS_SDIR/get-pip.py; sudo $PYTHON_EXE $DOWNLOADS_SDIR/get-pip.py --ignore-installed; PIP_CMD="sudo $PYTHON_EXE -m pip"; export PYTHON_EXE PIP_CMD; fi
-  - $PIP_CMD install virtualenv
-  - virtualenv -p $PYTHON_EXE venv
-  - source venv/bin/activate
+ - echo "Instaling python version $pyver, dist=$pydist"
+ - if [ $pyver != pypy ] && [ $pyver != pypy3 ]; then git clone https://github.com/gappleto97/terryfy; source terryfy/travis_tools.sh; get_python_environment  $pydist $pyver; fi
+ - if [ $pyver == pypy ] || [ $pyver == pypy3 ]; then brew install $pyver; PYTHON_EXE=$pyver; curl $GET_PIP_URL > $DOWNLOADS_SDIR/get-pip.py; sudo $PYTHON_EXE $DOWNLOADS_SDIR/get-pip.py --ignore-installed; PIP_CMD="sudo $PYTHON_EXE -m pip"; export PYTHON_EXE PIP_CMD; fi
+ - $PIP_CMD install virtualenv
+ - virtualenv -p $PYTHON_EXE venv
+ - source venv/bin/activate
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh";
    else "./install_linux.sh"; fi
+
 env:
   global:
     - secure: tqP3xUHLZQFVGztW2tECV6nookV9+q9X6nSKgK4gceT6bQ4JKQsZ/bNlHxIbA+8GpClSxNpJ+BbMgujataSBUACMr/MVnr6DhP3poqpCPlCRF+1dA6SvchXOPlywpxd6/xYvti6t9puZ2up9TUaBJWqWcbSk6dCUgX3NbBdCSbBmc1VbLPWBWyoVDZxF/dK8dM8q/5qvOqZEo2QXmEBm9rpASw3kuIWMhUxhcLMksjROvL/yEdoDJ1fiVrUuZeT5tkelX36fRrjFD5xvEhh4nXqbLRVtlHeV2H7KEcKELPB8DC41dKVa9FSY5ABhDsv+Wap+8cGJG2ou/Sog4oo0JqxvU8Bn1Y70sCbUbKt1KPRzdhfEwd4em/FWIEvkQTK9fcD5bxsNEZsx6+puwNpumOlFJ6BRSanfWB9kJ8IR/i5sWOqW2y4czQzRkmQ5kpFIpoZRS+QoOW4LddFqrqUkTzCXfRmuXs8nYNdT7aZW1GoCPYXTEIPDw/V0ZE188F5/Qu3sqYLCiw8u8Ccedzd+GRPzNhu/31q9mCFebtmvb1uPrO6dMNt7Rnp3KSik6HGuBZQmb2xJmENKHU87BIvivEybOsQHeRoNiJd0ZCWAp37OGQ92Jyp1pGsl/+dW7QW20/LEULQCZh3MuRb1uLv5cqOSn6lZBmaeJ/fG88QoIiw=
