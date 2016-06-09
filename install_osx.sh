@@ -1,10 +1,5 @@
 # when runnign this for local development, you probably want to have a virtualenv already setup and activated
 
-which python3
-pyenv which python3
-which pip
-pyenv which pip
-
 python3 -m pip install virtualenv
 virtualenv venv
 source venv/bin/activate

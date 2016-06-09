@@ -34,11 +34,10 @@ zip -r $fqname.zip $fqname.app
 
 sudo spctl -a -v $fqname.app
 
-rm -rf $appname/
-rm -rf $fqname.app/
-rm $fqname
+mkdir ../build/
+mv $appname ../build/
+mv $fqname.app ../build/
+mv $fqname ../build/
 
 popd 
-
-ls dist
 
