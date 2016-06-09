@@ -8,7 +8,6 @@ pip install -r requirements-win.txt
 SET VERSION=%APPVEYOR_REPO_TAG_NAME%
 IF "%VERSION%"=="" SET VERSION=%APPVEYOR_REPO_COMMIT%
 
-cd installer
-package.bat %VERSION%
-cd ..
- 
+pushd installer
+call package.bat %VERSION%
+popd 
