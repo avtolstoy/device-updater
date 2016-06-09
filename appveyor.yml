@@ -3,6 +3,7 @@ environment:
     secure: iBAwCL/1SI3W95nhf1Bx9gbh+ORu8dsPBD7G4bFdRhU=
   key_secret:
     secure: WBc0/0gRXwnK61Clw6HY0SAyEHSqFPYrScVBoXcjTUo=
+
   SIGNTOOL_PATH:  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\
 
   matrix:
@@ -12,7 +13,7 @@ environment:
 
 install:
   - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt installer/windows_key.p12.appveyor.enc -secret %enc_secret%
+  - secure-file\tools\secure-file -decrypt installer/windows_key.p12.appveyor.enc -out installer/windows_key.p12 -secret %enc_secret%
   - setup_appveyor.bat
   - install.bat
 
@@ -23,14 +24,24 @@ artifacts:
 
 
 deploy:
-  release: $(APPVEYOR_REPO_TAG_NAME)
-  description: 'device updater release $(APPVEYOR_REPO_TAG_NAME)'
+- release: $(APPVEYOR_REPO_TAG_NAME)
+  description: 'Particle Firmware Manager release $(APPVEYOR_REPO_TAG_NAME)'
   provider: GitHub
   auth_token:
     secure: ra3kVtgote/ZaDOhGRJDeASq1xj+PB/ZX7UuBrnj0O+UCzf2pOJWdM2qszrhGKo0
-  artifact: installer/dist/particle_firmware_updater.exe
+  artifact: installer/dist/*.exe
   draft: false
   prerelease: false
   on:
     branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
+
+
+- provider: S3
+  access_key_id: AKIAJGDGIKX75HBQ2AQA
+  secret_access_key:
+     secure: smag1BSchYfnIs6ahrSYfctog4Ov2mJNpErcSaPiNY4jcjKhB091HuUaqIb6COqV
+  bucket: binaries.particle.io
+  set_public: true
+  folder: updater
+  artifact: installer/dist/*.exe
