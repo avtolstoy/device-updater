@@ -1,12 +1,5 @@
-# setup virtual environment
-# this isn't strictly necessary on a disposable VM build
-# but it means we can use this script also for local development/testing
+# when runnign this for local development, you probably want to have a virtualenv already setup and activated
 
-python -m pip install virtualenv
-virtualenv venv
-source venv/bin/activate
-
-echo "Virtual Env installed"
 which python
 pyenv which python
 which pip
