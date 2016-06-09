@@ -22,10 +22,6 @@ build: off
 after_build:
   appveyor PushArtifact installer\dist\%FQNAME%.exe -FileName %FQNAME%.exe -DeploymentName updater
 
-artifacts:
-  - path: installer\dist\*.exe
-    name: updater
-
 deploy:
 - release: $(APPVEYOR_REPO_TAG_NAME)
   description: 'Particle Firmware Manager release $(APPVEYOR_REPO_TAG_NAME)'
