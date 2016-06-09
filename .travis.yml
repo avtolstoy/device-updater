@@ -31,7 +31,3 @@ deploy:
   on:
     tags: true
 
-cache:
-  pip: true 
-  directories:
-   - /usr/local/opt/pyenv/versions/
