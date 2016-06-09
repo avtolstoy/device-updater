@@ -20,7 +20,7 @@ install:
 build: off
 
 artifacts:
-  - path: installer/dist/*.exe
+  - path: installer\dist\*.exe
 
 
 deploy:
@@ -29,7 +29,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: ra3kVtgote/ZaDOhGRJDeASq1xj+PB/ZX7UuBrnj0O+UCzf2pOJWdM2qszrhGKo0
-  artifact: installer/dist/*.exe
+  artifact: installer\dist\
   draft: false
   prerelease: false
   on:
@@ -44,4 +44,4 @@ deploy:
   bucket: binaries.particle.io
   set_public: true
   folder: updater
-  artifact: installer/dist/*.exe
+  artifact: installer\dist\
