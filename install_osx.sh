@@ -2,13 +2,15 @@
 # this isn't strictly necessary on a disposable VM build
 # but it means we can use this script also for local development/testing
 
-pip install virtualenv
+python -m pip install virtualenv
 virtualenv venv
 source venv/bin/activate
 
 echo "Virtual Env installed"
 which python
 pyenv which python
+which pip
+pyenv which pip
 
 brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
 pip install -I Cython==0.23
