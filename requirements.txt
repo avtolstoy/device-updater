@@ -1,5 +1,5 @@
 kivy==1.9.1
-pyinstaller==3.2
+pyinstaller==3.1.1
 pyserial==3.0.1
 docutils==0.12
 pygments==2.1
