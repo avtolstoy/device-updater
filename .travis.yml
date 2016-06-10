@@ -25,9 +25,8 @@ env:
   - secure: bm1cdLWc5AjXFsjnHVJDkDtpnWf79xu7X8T4IyLdTLt+Xh3J54HQjcvsJ2CM1t0XjuXm9xD6C7bx+2kRNtb0/8cCi3DkPReWEerAkINOGPP7hAjOqn81jnBu8K9+q3rM8esDQIlTfBadgox9x7FT3U+BiM4gYDpCgtpKBe+KeFLq1x+uH9fwYtX8XPpKXVh1WH2BO2fX0t7aS2pUN3wBiV5Y/04ReTxLUUDrEkVbHX3J6cJ7B4dc5nlfey0Kt7mkVe1OjyCDtDp47ibn+u7f9ASahhHgZon0Tyks94VcKBJ/5dTsUEGxCy3JeFDkoNM+QWZrtwk6FUpU7k5JxFaxvnnsI+ObB+Dai0qGOdhEF1Y5EOoS75/GPw0rc+jtSJrvFXttODIO6YhTwG2VKTzSmWSUsakiHo3JE6AYkUOIpf9ss+BePhbGHvwPH49NcBRP98BYfFT6mAz5WW96f+/o+7zP30+h6jyD0xVjW5Xjy9vNJVjNyrZv3joNgKNTYsjgupxyKbT6+wW2ASxjhXceyUDD3ogUOURocDBZwIYijULCp/kIAm1qIpnDZtKIQPseo5fpZd8VMzsPNMQpgGu6hWo9sFGfVCce0lxcQz1vPp+ooQj0S9QpmqASKcfomS6liEEFabMfIivkIIjvsu1MiAyY+5VOMu6Hfa9hspPO5t4=
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_3661a0358acc_key -iv $encrypted_3661a0358acc_iv
-  -in installer/key.p12.travis.enc -out installer/key.p12 -d
-- pushd installer && ./add_key.sh && popd
+ - openssl aes-256-cbc -K $encrypted_a81b52b60625_key -iv $encrypted_a81b52b60625_iv -in key.p12.travis.enc -out key.p12 -d
+ - pushd installer && ./add_key.sh && popd
 
 after_install:
 - pushd installer && remove_key.sh && popd
