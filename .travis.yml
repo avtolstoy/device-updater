@@ -30,7 +30,7 @@ before_install:
 - installer/add_key.sh
 
 after_install:
-- installer/remove_key.sh
+- pushd installer && remove_key.sh && popd
 
 deploy:
 - provider: s3
