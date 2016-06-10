@@ -23,14 +23,12 @@ env:
   - secure: tqP3xUHLZQFVGztW2tECV6nookV9+q9X6nSKgK4gceT6bQ4JKQsZ/bNlHxIbA+8GpClSxNpJ+BbMgujataSBUACMr/MVnr6DhP3poqpCPlCRF+1dA6SvchXOPlywpxd6/xYvti6t9puZ2up9TUaBJWqWcbSk6dCUgX3NbBdCSbBmc1VbLPWBWyoVDZxF/dK8dM8q/5qvOqZEo2QXmEBm9rpASw3kuIWMhUxhcLMksjROvL/yEdoDJ1fiVrUuZeT5tkelX36fRrjFD5xvEhh4nXqbLRVtlHeV2H7KEcKELPB8DC41dKVa9FSY5ABhDsv+Wap+8cGJG2ou/Sog4oo0JqxvU8Bn1Y70sCbUbKt1KPRzdhfEwd4em/FWIEvkQTK9fcD5bxsNEZsx6+puwNpumOlFJ6BRSanfWB9kJ8IR/i5sWOqW2y4czQzRkmQ5kpFIpoZRS+QoOW4LddFqrqUkTzCXfRmuXs8nYNdT7aZW1GoCPYXTEIPDw/V0ZE188F5/Qu3sqYLCiw8u8Ccedzd+GRPzNhu/31q9mCFebtmvb1uPrO6dMNt7Rnp3KSik6HGuBZQmb2xJmENKHU87BIvivEybOsQHeRoNiJd0ZCWAp37OGQ92Jyp1pGsl/+dW7QW20/LEULQCZh3MuRb1uLv5cqOSn6lZBmaeJ/fG88QoIiw=
   - secure: FbGCizI7KeUsp7l5LH43hMWACKH5DeXR/36ubLaentKEyGXj/UEiWqA4EA4c0/mZ4CBV/Ppob9jHP7HsX+gCmoCSLj4azDevtocCcMa53qaZLXW9Vtiul3QBCMfEIG6YMoqO0d/3YPmopOctvXco0Z2qaG37S0DMFIR2+a56TNbFknvHyfcPBz8WESo8N36JkodSHzRF5kXFKRHeynGTkicj4nkZoYa0xA+zviOr4tNH1imsVVqpy4qOiqY00FOV3vSf3XXzBzG8hEUc+0QSF+6lALYUct7HLb4jiNnibajdaUqOj1HJbwsY4udAHr8X51A2eSxZYO6GO0XAlIUA2RXpElFx6aa4vI6NJc1B/FGC22hLOxTVQCzNR/JzxpqkCwDg+V0uEH6UXX5LeyHAb3pJrAZyQOE4onYg5zk7cPqDYl6oJCshLBVgJ7R2zILP3fd+uWNpg8YH1FXAFKQXKmyWuytx9X2Hxfj6AOxkX5RK9Uzs71HznUBg2r1jp93TEv+o4k9rBciYdyWlK4ZKZbzGPG9JgpEe8dcP9eV0pGgW/9++i0vBvGNHYLHPlHAYJTLgsFX0t4TfINeN6MV69ne5J8uidnFFpw4otNqzVt1WvcSwtdpcxVeQA2y/EIy/d0FcR7JRjIz55T2zn5olfpaVajJQwoh2KAeTvbhp0Yg=
   - secure: bm1cdLWc5AjXFsjnHVJDkDtpnWf79xu7X8T4IyLdTLt+Xh3J54HQjcvsJ2CM1t0XjuXm9xD6C7bx+2kRNtb0/8cCi3DkPReWEerAkINOGPP7hAjOqn81jnBu8K9+q3rM8esDQIlTfBadgox9x7FT3U+BiM4gYDpCgtpKBe+KeFLq1x+uH9fwYtX8XPpKXVh1WH2BO2fX0t7aS2pUN3wBiV5Y/04ReTxLUUDrEkVbHX3J6cJ7B4dc5nlfey0Kt7mkVe1OjyCDtDp47ibn+u7f9ASahhHgZon0Tyks94VcKBJ/5dTsUEGxCy3JeFDkoNM+QWZrtwk6FUpU7k5JxFaxvnnsI+ObB+Dai0qGOdhEF1Y5EOoS75/GPw0rc+jtSJrvFXttODIO6YhTwG2VKTzSmWSUsakiHo3JE6AYkUOIpf9ss+BePhbGHvwPH49NcBRP98BYfFT6mAz5WW96f+/o+7zP30+h6jyD0xVjW5Xjy9vNJVjNyrZv3joNgKNTYsjgupxyKbT6+wW2ASxjhXceyUDD3ogUOURocDBZwIYijULCp/kIAm1qIpnDZtKIQPseo5fpZd8VMzsPNMQpgGu6hWo9sFGfVCce0lxcQz1vPp+ooQj0S9QpmqASKcfomS6liEEFabMfIivkIIjvsu1MiAyY+5VOMu6Hfa9hspPO5t4=
-
 before_install:
- - openssl aes-256-cbc -K $encrypted_a81b52b60625_key -iv $encrypted_a81b52b60625_iv -in key.p12.travis.enc -out key.p12 -d
- - pushd installer && ./add_key.sh && popd
-
+- openssl aes-256-cbc -K $encrypted_a81b52b60625_key -iv $encrypted_a81b52b60625_iv
+  -in key.p12.travis.enc -out key.p12 -d
+- pushd installer && ./add_key.sh && popd
 after_install:
 - pushd installer && remove_key.sh && popd
-
 deploy:
 - provider: s3
   access_key_id: AKIAJGDGIKX75HBQ2AQA
@@ -48,7 +46,9 @@ deploy:
     secure: g3WZUMoQFs/ajwqJiqnvii5XBm4/JN+0e8S8/6pURRX58jo5Khr85PUovc7XR9V4MQZvyTDSybhxmruYr7PoavmnFRajG266P/mSSNewmAX8/buzKMcI270Rzauf/Y1Qx5KvU7PwpT1sm/+1ada8rSGK//ZmFZ+hZ+gmBORIgP3m1iQ9SyrHnjIRe5aBEc1cHaW+4DsNytwZQCfxbJLbqc0D4VKeeIaCgO+nC0LYh8LICuxetdhNpKM6dFi4/yxoz1qbRqIM+up2T/nsA49zk7l25Uy1JdLzcLYl2FajFlhRDUW6ifalGCmdbyVFRpgpNoYHoM2wjV+KC/Gczv3yHVrGeiBpTXD9Spzthr4qtGhN5GAPPPkFQCSjVEZFZ9RjJKDAJqCIGGNbzLTptMwZEeOc6OPWgpKJ1TaDyHooB5Fr4UxgPTWTgbtv+9V534WbPpkDwhnDoo06tsGmPxF/SUsI32UfvM8md5hwLbVN+vakGCyQlqz9q0pWETnPygfp7MzCrzIQfM36Z/5b8oWI1Y64xq++uoLiknPX7nzoYibiSrakFPaJ1uJP6HjrYC/0D96itjBtKTBjbEoKEJln+ve9CwiU0dqkuc7Dm6nz4ywpyaTlWqojh64T8x8Km5tC3G4+BKzzKH9SPyMsxG7zNHQuXGvGCtTr8OzkbNXOV8E=
   on:
     tags: true
-
 cache:
   directories:
   - venv
+dd:
+- openssl aes-256-cbc -K $encrypted_a81b52b60625_key -iv $encrypted_a81b52b60625_iv
+  -in key.p12.travis.enc -out key.p12 -d
