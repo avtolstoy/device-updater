@@ -39,6 +39,8 @@ deploy:
   upload-dir: updater
   acl: public_read
   skip_cleanup: true
+  on:
+    tags: true
 - provider: releases
   file: installer/dist/*.zip
   file_glob: true
