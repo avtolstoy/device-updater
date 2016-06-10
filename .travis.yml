@@ -40,7 +40,8 @@ deploy:
   acl: public_read
   skip_cleanup: true
 - provider: releases
-  file: installer/dist/${fqname}.zip
+  file: installer/dist/*.zip
+  file_glob: true
   skip_cleanup: true
   api_key:
     secure: g3WZUMoQFs/ajwqJiqnvii5XBm4/JN+0e8S8/6pURRX58jo5Khr85PUovc7XR9V4MQZvyTDSybhxmruYr7PoavmnFRajG266P/mSSNewmAX8/buzKMcI270Rzauf/Y1Qx5KvU7PwpT1sm/+1ada8rSGK//ZmFZ+hZ+gmBORIgP3m1iQ9SyrHnjIRe5aBEc1cHaW+4DsNytwZQCfxbJLbqc0D4VKeeIaCgO+nC0LYh8LICuxetdhNpKM6dFi4/yxoz1qbRqIM+up2T/nsA49zk7l25Uy1JdLzcLYl2FajFlhRDUW6ifalGCmdbyVFRpgpNoYHoM2wjV+KC/Gczv3yHVrGeiBpTXD9Spzthr4qtGhN5GAPPPkFQCSjVEZFZ9RjJKDAJqCIGGNbzLTptMwZEeOc6OPWgpKJ1TaDyHooB5Fr4UxgPTWTgbtv+9V534WbPpkDwhnDoo06tsGmPxF/SUsI32UfvM8md5hwLbVN+vakGCyQlqz9q0pWETnPygfp7MzCrzIQfM36Z/5b8oWI1Y64xq++uoLiknPX7nzoYibiSrakFPaJ1uJP6HjrYC/0D96itjBtKTBjbEoKEJln+ve9CwiU0dqkuc7Dm6nz4ywpyaTlWqojh64T8x8Km5tC3G4+BKzzKH9SPyMsxG7zNHQuXGvGCtTr8OzkbNXOV8E=
