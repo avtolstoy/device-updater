@@ -1,8 +1,12 @@
-# Device Updater
+[![Travis Build Status](https://travis-ci.org/spark/device-updater.svg?branch=master)](https://travis-ci.org/spark/device-updater)
+[![Build status](https://ci.appveyor.com/api/projects/status/3fp55stu72sb5rvp/branch/master?svg=true)](https://ci.appveyor.com/project/m-mcgowan/device-updater/branch/master)
 
-The device updater is a GUI app that flashes the latest firmware to your Electron or Photon. But why, we have Particle CLI, and OTA updates from the IDE.
 
-The main reason for the updater's existence is that it allows the firmware to be flashed to the Electron simply and easily, without incurring any cost from data use. While the CLI does this too, the updater offers a simple "download and run" experience.
+# Particle Firmware Manager
+
+The device updater is a GUI app for your desktop that flashes the latest firmware to your Electron or Photon. But why, we have Particle CLI, and OTA updates from the IDE?
+
+The main reason for the app is that it allows the firmware to be flashed to the Electron simply and easily, without incurring any cost from data use. While the CLI does this too, the updater offers a simple "download and run" experience, requiring zero installation. 
 
 ## Getting Started
 
