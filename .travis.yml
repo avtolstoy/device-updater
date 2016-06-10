@@ -27,7 +27,7 @@ env:
 before_install:
 - openssl aes-256-cbc -K $encrypted_3661a0358acc_key -iv $encrypted_3661a0358acc_iv
   -in installer/key.p12.travis.enc -out installer/key.p12 -d
-- installer/add_key.sh
+- pushd installer && add_key.sh && popd
 
 after_install:
 - pushd installer && remove_key.sh && popd
