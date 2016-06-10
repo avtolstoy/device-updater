@@ -11,7 +11,7 @@ def needs_install(required_version):
     result = True
     try:
         aReg = ConnectRegistry(None,HKEY_LOCAL_MACHINE)
-        aKey = OpenKey(aReg, r"SOFTWARE\Particle\drivers\serial")
+        aKey = OpenKey(aReg, r"SOFTWARE\Particle\drivers\serial", 0, KEY_READ | KEY_WOW64_64KEY)
         qValue = QueryValueEx(aKey, r"version")
         installed_version = int(qValue[0]) if qValue else 0
         result = installed_version < required_version
