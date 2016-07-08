@@ -1,5 +1,10 @@
 # when runnign this for local development, you probably want to have a virtualenv already setup and activated
 
+pushd installer
+./add_key.sh
+popd
+
+
 python3 -m pip install virtualenv
 virtualenv venv
 source venv/bin/activate
@@ -16,7 +21,6 @@ python -m pip install -r requirements.txt -r requirements-osx.txt
 VERSION="${TRAVIS_TAG:-${TRAVIS_COMMIT:-`date "+%F-%T"`}}"
 
 pushd installer
-./add_key.sh
 ./package.sh $VERSION 
 popd
 
