@@ -40,7 +40,7 @@ def relative_file(path):
     return path
 
 
-fwversion = '0.5.2'
+fwversion = '0.5.3-rc.1'
 
 
 class Devices:
