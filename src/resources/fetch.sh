@@ -3,7 +3,7 @@
 version=$1
 dir=$2
 
-version=${version:-"0.5.2"}
+version=${version:-"0.5.3-rc.2"}
 dir=${dir:-"."}
 
 gh="https://github.com/spark/firmware/releases/download/v${version}"
@@ -26,6 +26,7 @@ function fetchRelease
         parts=${parts[$p]}
         echo "Fetching platform $name (id: $p, parts: $parts)"
         pushd $name
+	rm *
         for part in $parts; do
             wget $gh/system-part$part-$version-$name.bin
             echo "fetching url $url"
