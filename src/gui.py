@@ -46,15 +46,39 @@ def post_to_event_thread(target):
 def large(s):
     return "[b]"+s+"[/b]"
 
-
+"""
+A widget to display the status of a connected device.
+"""
 class ConnectedDevice(Widget):
     text = StringProperty("")
     go = ObjectProperty(None)       # start update button
     bar = ObjectProperty(None)      # progress bar
+
+    """
+    flag to control if this device can be upgraded. The go text will
+    show why the device cannot be upgraded.
+    """
+    upgrade_available = BooleanProperty()
+
+    """
+    text on the button to start the flash process.
+    """
     go_text = StringProperty("")
+
+    """
+    opacity of device info, used to fade in/out
+    """
     device_opacity = NumericProperty(0)
 
+    """
+    the version to upgrade to
+    """
     update_version = StringProperty("")
+
+    """
+    the version on the device
+    """
+    existing_version = StringProperty("")
 
     """
     the current update state value. see FlashState
@@ -83,10 +107,10 @@ class ConnectedDevice(Widget):
 
     button_state_details = {
         FlashState.not_connected: ("( NO DEVICE PRESENT )"),
-        FlashState.not_started: ( large(" Update to {version} ") ),
-        FlashState.in_progress: ( large(" Updating to {version}") ),
+        FlashState.not_started: ( large(" Update {existing} to {version} ") ),
+        FlashState.in_progress: ( large(" Updating {existing} to {version}") ),
         FlashState.error: ( large(" Aw, something bad happened...  ;-( ") ),
-        FlashState.complete: ( large(" Update Complete "))
+        FlashState.complete: ( large(" Update to {version} Complete "))
     }
 
     def __init__(self, **kwargs):
@@ -121,6 +145,9 @@ class ConnectedDevice(Widget):
     def on_update_version(self, instance, value):
         self.update_button()
 
+    """
+    updates the button text to reflect the current state
+    """
     def update_button(self):
         text = self.button_state_details.get(self.update_state).format(version=self.update_version)
         self.making_progress = True

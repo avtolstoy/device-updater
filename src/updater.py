@@ -85,10 +85,22 @@ class Updater:
 
 class FlashState(IntEnum):
     not_connected = 1
-    not_started = 2
-    in_progress = 3
-    error = 4
-    complete = 5
+    """
+    the device is recognized but not supported.
+    """
+    not_supported_device = 2
+    """
+    device has a newer or equal version already installed.
+    """
+    already_upgraded = 3
+    """
+    user has to flash another version first
+    """
+    manual_upgrade_needed = 4
+    not_started = 20
+    in_progress = 30
+    error = 40
+    complete = 50
 
 
 class UpdaterState:

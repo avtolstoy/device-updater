@@ -96,17 +96,21 @@ class USBDeviceConnection:
         self.close()
         self.serial = serial.Serial(self.port, baudrate=baud, timeout=timeout)
 
+    def fetch_version_string(self):
+        if self.serial is None:
+            self.open(9600, timeout=0.3)
+        self.send('v')
+        line = self.readline()
+        logger.debug("listening: %s" % line)
+        self.drain()
+        return line
+
     def is_listening(self):
         """
         Determines if the device is in listening mode. This relies on the 'v' command, which is present in
         system firmware 0.4.4 onwards.
         """
-        if self.serial is None:
-            self.open(9600, timeout=0.3)
-        self.send('v')
-        line = self.readline()
-        logger.debug("listening: %s" %  line)
-        self.drain()
+        line = self.fetch_version_string()
         return line.lower().startswith("system firmware version")
 
     def wait_connected(self, timeout=30, sleep=1):

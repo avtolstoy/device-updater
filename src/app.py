@@ -6,6 +6,7 @@ import logging
 import unittest
 from abc import abstractmethod
 from threading import Thread, Event
+import kivy.uix.Popup
 
 from controller import Actor, ActiveObjectProxy
 from devices import UpgradableDevice, USBDeviceConnection
@@ -39,13 +40,13 @@ logger = logging.getLogger(__name__)
 def relative_file(path):
     return path
 
-
-fwversion = '0.5.1'
+# The version of firmware bundled with this app
+fwversion = '0.6.0-rc.1'
 
 
 class Devices:
     photon = UpgradableDevice("Photon", 0x2b04, 0xc006, "photon", fwversion, 2)
-    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", fwversion, 2)
+    electron = UpgradableDevice("Electron", 0x2b04, 0xc00a, "electron", fwversion, 3)
     p1 = UpgradableDevice("P1", 0x2b04, 0xc008, "p1", fwversion, 2)
     none = []
     all = [ photon, electron, p1 ]
@@ -120,10 +121,18 @@ class UpdaterController:
 
     def flash(self, connected):
         try:
-            self.updater_state.set_state(FlashState.in_progress)
             if connected is None:
                 raise ValueError("No device connected")
             connection = USBDeviceConnection(*connected)
+
+            # a bit of a hack this.
+            if fwversion > '0.6.0' and connection.fetch_version() < '0.5.3-rc.2':
+                self.updater_state.set_state(FlashState.not_started)
+                popup = Popup(title='Test popup',
+                              content=Label(text='Hello world'),
+                              size_hint=(None, None), size=(400, 400))
+
+            self.updater_state.set_state(FlashState.in_progress)
             progress = ProgressSpan()
             def progress_update(current):
                 self.callback.progress(progress.min, progress.max, progress.current)
