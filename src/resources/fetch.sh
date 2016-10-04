@@ -3,7 +3,7 @@
 version=$1
 dir=$2
 
-version=${version:-"0.5.3-rc.2"}
+version=${version:-"0.5.3"}
 dir=${dir:-"."}
 
 gh="https://github.com/spark/firmware/releases/download/v${version}"
