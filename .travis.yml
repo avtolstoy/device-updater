@@ -32,7 +32,7 @@ deploy:
   secret_access_key:
     secure: otDEzaHhFfa+mqACXumSmc6/Dkl1NXUshfDUV67cd1GPsEWCWjYihPZ2qLpp36WVkVeU2ZcYyhkwYJaWMe+W6hGkzEiufiGqIGhXR2QDgJKPJ9/hg/riYpGK2n1HEPkqwv3jf3AHhSX+t9H+5HACpkFVj7fqc3m/j0e0zRFQl7y9RqG0qz5fDxKV+RdEZo0gwaHzB4TBjvEB1RQoguf5BmkzS/vChSKjbtX3bQf5cQvDMK9EhJ1OzTSWpOzwG9ke7bQJY+cbtI64mGRh8NqwdhF2eoZT13BSXLtutDg2kNkmovuZ+jShFUVm3Ta4UfgUzoBxrIPCxFFUbae5rexFGOmOHyT67ierWvxSBek8/Z865sD0uyqsWlzanJZoMmF/R9AV5xHd1v5H0O99kvX56v48WYcD82MeF1EAIo6s89+Ue9QFE9hfbygsUzohwB34ubj++zaXBiiqicWOQQQz4ERonaOhqDoOmnTLod+hO1Efz/1ZRXf9PH4ULCJFQW9hCfGGxHheZ/F8MRrATrn+Oon8gK8/evBJ1cnrVKMEq4VStXDTq1qYZKW6NzIyCqkfaC9djKs/on/KMaJUcTafpJsytlGAbp0o9wqNpkEvUkzn9Ol0gNZEhg4QmP5eQOcAJIcLMQA1npng5KayT1L8N2Ek77YgJuoA1CWbmoAlvbE=
   bucket: binaries.particle.io
-  local-dir: installer/dist
+  local_dir: installer/dist
   upload-dir: updater
   acl: public_read
   skip_cleanup: true
