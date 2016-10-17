@@ -1,10 +1,7 @@
 sudo: required
-language: ruby
-rvm:
-  - 2.2
 matrix:
   include:
-  - language: ruby
+  - language: generic
     python: 3.5
     os: osx
     env: pyver=3.5 pydist=homebrew
@@ -19,7 +16,7 @@ install:
 - "$PIP_CMD install virtualenv"
 - virtualenv -p $PYTHON_EXE venv
 - source venv/bin/activate
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh";
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh"; rvm use 2.2;
   else "./install_linux.sh"; fi
 env:
   global:
