@@ -16,7 +16,7 @@ install:
 - "$PIP_CMD install virtualenv"
 - virtualenv -p $PYTHON_EXE venv
 - source venv/bin/activate
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh"; rvm use 2.2;
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh" && rvm use 2.2;
   else "./install_linux.sh"; fi
 env:
   global:
