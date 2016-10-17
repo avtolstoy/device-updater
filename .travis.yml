@@ -1,7 +1,10 @@
 sudo: required
+language: ruby
+rvm:
+  - 2.2
 matrix:
   include:
-  - language: generic
+  - language: ruby
     python: 3.5
     os: osx
     env: pyver=3.5 pydist=homebrew
