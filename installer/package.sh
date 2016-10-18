@@ -30,13 +30,10 @@ pushd dist
 codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN $fqname.app/Contents/MacOS/$fqname
 codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN --force --verify --verbose $fqname.app
 
-mkdir ../distzip
-zip -r ../distzip/$fqname.zip $fqname.app
+mkdir ../dist
+zip -r ../dist/$fqname.zip $fqname.app
 
 sudo spctl -a -v $fqname.app
-
-rm -rf *
-mv ../distzip/* .
 
 popd 
 
