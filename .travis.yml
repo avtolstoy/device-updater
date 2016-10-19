@@ -16,13 +16,14 @@ install:
 - "$PIP_CMD install virtualenv"
 - virtualenv -p $PYTHON_EXE venv
 - source venv/bin/activate
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh" && rvm use 2.2;
-  else "./install_linux.sh"; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then "./setup_osx.sh" && "./install_osx.sh"
+  && rvm use 2.2; else "./install_linux.sh"; fi
 env:
   global:
     secure: FfWTn4KRqVz9yp9rZoPpfABxJZGpcLDXRmFE7MDuUAPyJCA6v4C9xdNPaUHF7ClV8Q97/vegZsbukpBmeagdu2VQIzLaL4elCLcRVxO1p7ovNTB1ZRhIB4h52z2tZB9/v4l/LeTYNfrQukdy0CqwoAoT4h82pERqnIz0+cQNiZuh6iPzmZIE6NWfq8WWfd+BAZF5ItvxboFyQyY7CBHJVV212IHkgQM4O2GAjR+ZfFbgo6eBQYr0fDmRguIRTZwcV8+8JVkzfChubrn39pi6qxqTt+EnVAv1qaL/zX8M9Luh+PMpY0L9Bfx6caw4aQOdEAM3nz7npxoIajhGWar+hRdCMnZGvlpnX5Jb5mWj2CZJNEWwDS6fPec6qPQ0JJ6iU5vc6Vfvtmu3pumxd07p+xyRICC6IGotcOmbjl2eiWDgZuzKS6ry3X7NetvzNphTFJCy8vsTnuB4zkSG+pSHdAV10VKo8gocjWmvIjFXnoY3pf8eLiDPET/K8eHQaFMcdGfJpSDYMs/DW6vS0YcZMLN1D8DPYCOJ0hMIeNvb8vTgFsBdlXNl/wjRtNBYf+gdZrDK+4nUlQuqCeLhGh4S5GfMqLAMt1jxwMnHPajyOZa1pzl141rPYB7ZYT6qn/SE52/4I8fCr9vb6clZbQFFdlXp6rINYt0EMWvDx4OXRsc=
 before_install:
-- openssl aes-256-cbc -K $encrypted_a81b52b60625_key -iv $encrypted_a81b52b60625_iv -in installer/key.p12.travis.enc -out installer/key.p12 -d
+- openssl aes-256-cbc -K $encrypted_3661a0358acc_key -iv $encrypted_3661a0358acc_iv
+  -in installer/key.p12.travis.enc -out installer/key.p12 -d
 - pushd installer && ./add_key.sh && popd
 after_install:
 - pushd installer && remove_key.sh && popd
@@ -39,7 +40,7 @@ deploy:
   on:
     tags: true
 - provider: releases
-  file: installer/dist/*.zip
+  file: dist/*.zip
   file_glob: true
   skip_cleanup: true
   api_key:
