@@ -27,8 +27,8 @@ appname="$appname" fqname="$fqname" pyinstaller  -y --windowed --icon=resources/
 
 pushd dist
 
-sudo codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN $fqname.app/Contents/MacOS/$fqname
-sudo codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN --force --verify --verbose $fqname.app
+codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN $fqname.app/Contents/MacOS/$fqname
+codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN --force --verify --verbose $fqname.app
 
 mkdir ../../dist
 zip -r ../../dist/$fqname.zip $fqname.app
