@@ -26,7 +26,7 @@ rm -rf dist
 appname="$appname" fqname="$fqname" pyinstaller  -y --windowed --icon=resources/particle.icns osx_onefile.spec --clean
 
 pushd dist
-
+security unlock-keychain -p $XCODE_KEYCHAIN_PASSWORD $XCODE_KEYCHAIN
 codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN $fqname.app/Contents/MacOS/$fqname
 codesign -s $signid --keychain ~/Library/Keychains/$XCODE_KEYCHAIN --force --verify --verbose $fqname.app
 
