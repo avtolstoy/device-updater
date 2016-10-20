@@ -27,6 +27,7 @@ before_install:
 - pushd installer && ./add_key.sh && popd
 after_install:
 - pushd installer && remove_key.sh && popd
+- cd $TRAVIS_BUILD_DIR && ls
 deploy:
 - provider: s3
   access_key_id: AKIAJGDGIKX75HBQ2AQA
