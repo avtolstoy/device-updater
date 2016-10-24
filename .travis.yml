@@ -4,7 +4,7 @@ matrix:
   - language: generic
     python: 3.5
     os: osx
-    osx_image: xcode6.4
+    osx_image: beta-xcode6.1
     env: pyver=3.5 pydist=homebrew
 install:
 - echo "Instaling python version $pyver, dist=$pydist"
