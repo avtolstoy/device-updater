@@ -15,7 +15,7 @@ def needs_install(required_version):
         aKey = OpenKey(aReg, r"Software\Particle\Drivers", 0, KEY_READ | KEY_WOW64_64KEY)
         qValue = QueryValueEx(aKey, r"Version")
         installed_version = qValue[0] if qValue else "0"
-        result = installed_version < required_version
+        result = LooseVersion(installed_version) < LooseVersion(required_version)
         print("installed driver version %s: required version %s" % (installed_version, required_version))
     except WindowsError as e:
         print(e)
@@ -46,7 +46,7 @@ def install_inf_file(name):
 """
 
 
-current_drivers_version = "6.1.0.51"
+current_drivers_version = "6.1.0.63"
 
 def windows_setup():
     if needs_install(current_drivers_version):
