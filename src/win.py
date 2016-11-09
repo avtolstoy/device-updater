@@ -1,5 +1,6 @@
 import os
 import subprocess
+from distutils.version import LooseVersion
 
 import sys
 from winreg import *
@@ -11,9 +12,9 @@ def needs_install(required_version):
     result = True
     try:
         aReg = ConnectRegistry(None,HKEY_LOCAL_MACHINE)
-        aKey = OpenKey(aReg, r"SOFTWARE\Particle\drivers\serial", 0, KEY_READ | KEY_WOW64_64KEY)
-        qValue = QueryValueEx(aKey, r"version")
-        installed_version = int(qValue[0]) if qValue else 0
+        aKey = OpenKey(aReg, r"Software\Particle\Drivers", 0, KEY_READ | KEY_WOW64_64KEY)
+        qValue = QueryValueEx(aKey, r"Version")
+        installed_version = qValue[0] if qValue else "0"
         result = installed_version < required_version
         print("installed driver version %s: required version %s" % (installed_version, required_version))
     except WindowsError as e:
@@ -45,12 +46,12 @@ def install_inf_file(name):
 """
 
 
-current_drivers_version = 1
-""" Increment this when the drivers are changed, and also in the Inno Setup install script """
+current_drivers_version = "6.1.0.51"
 
 def windows_setup():
     if needs_install(current_drivers_version):
-        subprocess.call(["resources/windows/particle_drivers.exe", "/VERYSILENT"])
+        drivers_installer = "resources/windows/particle_drivers_{}.exe".format(current_drivers_version)
+        subprocess.call([drivers_installer, "/S"])
 
 if __name__ == '__main__':
     setup_working_dir()
