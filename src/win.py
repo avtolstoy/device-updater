@@ -50,8 +50,9 @@ current_drivers_version = "6.1.0.51"
 
 def windows_setup():
     if needs_install(current_drivers_version):
-        drivers_installer = "resources/windows/particle_drivers_{}.exe".format(current_drivers_version)
-        subprocess.call([drivers_installer, "/S"])
+        drivers_installer = "resources\windows\particle_drivers_{}.exe".format(current_drivers_version)
+        print("launching", drivers_installer)
+        subprocess.call([drivers_installer, "/S"], shell=True)
 
 if __name__ == '__main__':
     setup_working_dir()
